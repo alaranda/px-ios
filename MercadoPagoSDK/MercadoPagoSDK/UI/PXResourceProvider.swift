@@ -81,8 +81,7 @@ class PXResourceProvider {
     }
 
     static func getDescriptionForErrorBodyForREJECTED_HIGH_RISK() -> String {
-        let key = error_body_description_base + PXPayment.StatusDetails.REJECTED_HIGH_RISK
-        return key.localized
+        return "px_congrats_rejected_high_risk_message".localized
     }
 
     static func getDescriptionForErrorBodyForREJECTED_CARD_HIGH_RISK() -> String {
@@ -98,6 +97,14 @@ class PXResourceProvider {
     static func getDescriptionForErrorBodyForREJECTED_INVALID_INSTALLMENTS() -> String {
         let key = error_body_description_base + PXPayment.StatusDetails.REJECTED_INVALID_INSTALLMENTS
         return key.localized
+    }
+
+    static func getDescriptionForErrorBodyForREJECTED_RAW_INSUFFICIENT_AMOUNT() -> String {
+        return "px_congrats_rejected_insufficient_amount_message".localized
+    }
+
+    static func getDescriptionForErrorBodyForREJECTED_CAP_EXCEEDED() -> String {
+        return "px_congrats_rejected_cap_exceeded_message".localized
     }
 
     static func getDescriptionForErrorBodyForGenericRejected() -> String {

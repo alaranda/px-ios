@@ -76,6 +76,10 @@ class PXBodyComponent: PXComponentizable {
                 return PXResourceProvider.getDescriptionForErrorBodyForREJECTED_BY_REGULATIONS()
             case PXPayment.StatusDetails.REJECTED_INVALID_INSTALLMENTS:
                 return PXResourceProvider.getDescriptionForErrorBodyForREJECTED_INVALID_INSTALLMENTS()
+            case PXPayment.StatusDetails.REJECTED_RAW_INSUFFICIENT_AMOUNT:
+                return PXResourceProvider.getDescriptionForErrorBodyForREJECTED_RAW_INSUFFICIENT_AMOUNT()
+            case PXPayment.StatusDetails.REJECTED_CAP_EXCEEDED:
+                return PXResourceProvider.getDescriptionForErrorBodyForREJECTED_CAP_EXCEEDED()
             default:
                 return PXResourceProvider.getDescriptionForErrorBodyForGenericRejected()
             }

@@ -174,3 +174,5 @@
 "px_congrats_rejected_insufficient_amount_title" = "No tienes dinero suficiente en tu cuenta";
 "px_congrats_rejected_insufficient_amount_message" = "Inténtalo con otro medio de pago.";
 "px_congrats_rejected_high_risk_message" = "Lo sentimos, la operación no pasó nuestra validación de seguridad.";
+"px_congrats_rejected_cap_exceeded_title" = "Superaste el límite diario para usar con el medio de pago elegido";
+"px_congrats_rejected_cap_exceeded_message" = "Puedes realizar la operación con un medio de pago distinto.";

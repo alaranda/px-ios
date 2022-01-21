@@ -196,11 +196,7 @@ extension ResourceManager {
                 return nil
             }
             if paymentResult.isError() {
-                if paymentResult.isHighRisk() {
-                    return getBadgeImage(name: "need_action_badge", clearBackground: clearBackground)
-                } else {
-                    return nil
-                }
+                return nil
             }
         } else {
             // Business Result Logic

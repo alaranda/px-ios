@@ -64,11 +64,19 @@ extension PXResultViewModel {
         guard let paymentMethod = paymentMethod else {
             return "".toAttributedString()
         }
+
         // Set title for paymentMethod
         var statusDetail = statusDetail
         let badFilledKey = "cc_rejected_bad_filled"
         if statusDetail.contains(badFilledKey) {
             statusDetail = badFilledKey
+        }
+
+        // Handle rejected title for custom rejected congrats
+        if statusDetail == PXPayment.StatusDetails.REJECTED_RAW_INSUFFICIENT_AMOUNT {
+            return getHeaderAttributedString(string: "px_congrats_rejected_insufficient_amount_title".localized)
+        } else if statusDetail == PXPayment.StatusDetails.REJECTED_CAP_EXCEEDED {
+            return getHeaderAttributedString(string: "px_congrats_rejected_cap_exceeded_title".localized)
         }
 
         let title = PXResourceProvider.getErrorTitleKey(statusDetail: statusDetail).localized
