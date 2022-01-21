@@ -193,13 +193,13 @@ extension ResourceManager {
                 }
             }
             if paymentResult.isWarning() {
-                return getBadgeImage(name: "need_action_badge", clearBackground: clearBackground)
+                return nil
             }
             if paymentResult.isError() {
                 if paymentResult.isHighRisk() {
                     return getBadgeImage(name: "need_action_badge", clearBackground: clearBackground)
                 } else {
-                    return getBadgeImage(name: "error_badge", clearBackground: clearBackground)
+                    return nil
                 }
             }
         } else {

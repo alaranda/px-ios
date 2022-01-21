@@ -29,8 +29,7 @@ open class PXOneTapDto: NSObject, Codable {
         behaviours: [String: PXBehaviour]?,
         displayInfo: PXOneTapDisplayInfo?,
         applications: [PXOneTapApplication]?,
-        bankTransfer: BankTransferDto?,
-        payerPaymentMethods: [PXCustomOptionSearchItem]?
+        bankTransfer: BankTransferDto?
     ) {
         self.paymentMethodId = paymentMethodId
         self.paymentTypeId = paymentTypeId

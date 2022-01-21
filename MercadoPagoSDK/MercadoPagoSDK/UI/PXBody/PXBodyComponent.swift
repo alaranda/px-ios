@@ -21,13 +21,13 @@ class PXBodyComponent: PXComponentizable {
         let amount = props.paymentResult.paymentData?.payerCost?.totalAmount ?? props.amountHelper.amountToPay
         let paymentMethodName = props.paymentResult.paymentData?.paymentMethod?.name
 
-        let title = getErrorTitle(status: status, statusDetail: statusDetail)
+        let title = isRejectedWithBodyTitle() ? getErrorTitle(status: status, statusDetail: statusDetail) : nil
         let message = getErrorMessage(status: status,
                                       statusDetail: statusDetail,
                                       amount: amount,
                                       paymentMethodName: paymentMethodName)
 
-        let errorProps = PXErrorProps(title: title.toAttributedString(), message: message?.toAttributedString(), secondaryTitle: nil, action: nil)
+        let errorProps = PXErrorProps(title: title?.toAttributedString(), message: message?.toAttributedString(), secondaryTitle: nil, action: nil)
         let errorComponent = PXErrorComponent(props: errorProps)
         return errorComponent
     }
@@ -77,7 +77,7 @@ class PXBodyComponent: PXComponentizable {
             case PXPayment.StatusDetails.REJECTED_INVALID_INSTALLMENTS:
                 return PXResourceProvider.getDescriptionForErrorBodyForREJECTED_INVALID_INSTALLMENTS()
             default:
-                return nil
+                return PXResourceProvider.getDescriptionForErrorBodyForGenericRejected()
             }
         }
         return nil
@@ -91,7 +91,7 @@ class PXBodyComponent: PXComponentizable {
         return hasPendingStatus && statusDetails.contains(props.paymentResult.statusDetail)
     }
 
-    func isRejectedWithBody() -> Bool {
+    func isRejectedWithBodyTitle() -> Bool {
         let statusDetails = [PXPayment.StatusDetails.REJECTED_CALL_FOR_AUTHORIZE,
                              PXPayment.StatusDetails.REJECTED_CARD_DISABLED,
                              PXPayment.StatusDetails.REJECTED_INVALID_INSTALLMENTS,
@@ -101,6 +101,10 @@ class PXBodyComponent: PXComponentizable {
                              PXPayment.StatusDetails.REJECTED_BY_REGULATIONS]
 
         return props.paymentResult.status == PXPayment.Status.REJECTED && statusDetails.contains(props.paymentResult.statusDetail)
+    }
+
+    func isRejectedWithBody() -> Bool {
+        return props.paymentResult.status == PXPayment.Status.REJECTED
     }
 
     func render() -> UIView {

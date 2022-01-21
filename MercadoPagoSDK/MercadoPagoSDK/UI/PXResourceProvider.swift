@@ -1,7 +1,8 @@
 import Foundation
 
 class PXResourceProvider {
-    static var error_title_default = "rejected_default_title"
+    static var error_title_default = "px_congrats_rejected_default_title"
+    static var error_body_message_default = "px_congrats_rejected_default_message"
     static var error_body_title_base = "¿Qué puedo hacer?"
     static var error_body_title_c4a = "error_body_title_call_for_authorize"
     static var error_body_description_base = "error_body_description_"
@@ -97,6 +98,10 @@ class PXResourceProvider {
     static func getDescriptionForErrorBodyForREJECTED_INVALID_INSTALLMENTS() -> String {
         let key = error_body_description_base + PXPayment.StatusDetails.REJECTED_INVALID_INSTALLMENTS
         return key.localized
+    }
+
+    static func getDescriptionForErrorBodyForGenericRejected() -> String {
+        return error_body_message_default.localized
     }
 
     static func getActionTextForErrorBodyForREJECTED_CALL_FOR_AUTHORIZE(_ paymentMethodName: String?) -> String {

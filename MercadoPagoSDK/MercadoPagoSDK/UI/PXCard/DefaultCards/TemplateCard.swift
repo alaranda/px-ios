@@ -38,6 +38,7 @@ class TemplatePIX: NSObject, GenericCardUI {
     var cardFontColor: UIColor = .white
     var defaultUI = true
     var securityCodePattern = 3
+    var gradientColors = [""]
 }
 
 class TemplateDebin: NSObject, GenericCardUI {

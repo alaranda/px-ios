@@ -513,6 +513,7 @@ extension PXOneTapViewModel {
         template.labelTextColor = oneTap.displayInfo?.tag?.textColor ?? ""
         template.labelBackgroundColor = oneTap.displayInfo?.tag?.backgroundColor ?? ""
         template.logoImageURL = oneTap.offlineTapCard?.displayInfo?.paymentMethodImageUrl ?? ""
+        template.gradientColors = oneTap.offlineTapCard?.displayInfo?.gradientColor ?? [""]
 
         return template
     }

@@ -677,6 +677,8 @@ extension PXOneTapViewController: PXCardSliderProtocol {
                 currentPaymentData.transactionAmount = NSDecimalNumber(string: String(viewModel.amountHelper.preferenceAmountWithCharges))
             }
 
+            currentPaymentData.paymentMethod?.bankTransferDisplayInfo = selectedApplication.payerPaymentMethod?.displayInfo
+
             currentPaymentData.paymentOptionId = targetModel.cardId ?? targetModel.selectedApplication?.paymentMethodId
 
             if selectedApplication.paymentTypeId == PXPaymentTypes.BANK_TRANSFER.rawValue {

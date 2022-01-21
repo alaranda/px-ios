@@ -9,7 +9,12 @@ extension PXResultViewModel {
     }
 
     func getActionLink() -> PXAction? {
-        return getButtonLabel() == getLinkLabel() ? nil : getAction(label: getLinkLabel(), action: getLinkAction())
+        if getButtonLabel() == getLinkLabel() {
+            // Prevents showing same label on both primary and secondary buttons
+            return nil
+        }
+
+        return getAction(label: getLinkLabel(), action: getLinkAction())
     }
 
     private func getAction(label: String?, action: Action) -> PXAction? {
@@ -62,19 +67,23 @@ extension PXResultViewModel {
     }
 
     private func getLinkLabel() -> String? {
-        if let primaryButton = pointsAndDiscounts?.primaryButton {
-            return primaryButton.label
-        }
         if paymentResult.hasSecondaryButton() {
             return PXFooterResultConstants.GENERIC_ERROR_BUTTON_TEXT.localized
         } else if paymentResult.isAccepted() {
             return PXFooterResultConstants.APPROVED_LINK_TEXT.localized
         }
+
         if let remedy = remedy {
             if remedy.shouldShowAnimatedButton || (paymentResult.isHighRisk() && remedy.highRisk != nil) {
                 return PXFooterResultConstants.GENERIC_ERROR_BUTTON_TEXT.localized
             }
+        } else {
+            // If there is no remedy, show generic secondary button
+            if paymentResult.isRejected() {
+                return PXFooterResultConstants.GENERIC_SECONDARY_BUTTON_TEXT.localized
+            }
         }
+
         return nil
     }
 
@@ -148,7 +157,11 @@ extension PXResultViewModel {
             case PXRejectedStatusDetail.DUPLICATED_PAYMENT.rawValue:
                 callback(PaymentResult.CongratsState.EXIT, nil)
             default:
-                self.selectOther()
+                if remedy != nil {
+                    selectOther()
+                } else {
+                    callback(PaymentResult.CongratsState.EXIT, nil)
+                }
             }
         }
     }

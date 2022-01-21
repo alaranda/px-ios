@@ -28,6 +28,7 @@ class PaymentResult {
                                   PXRejectedStatusDetail.BAD_FILLED_SECURITY_CODE.rawValue,
                                   PXRejectedStatusDetail.BAD_FILLED_OTHER.rawValue]
 
+    // Rejected with remedies will be shown as warning
     private let rejectedWithRemedyStatusDetails = [PXPayment.StatusDetails.REJECTED_BAD_FILLED_SECURITY_CODE,
                                                   PXPayment.StatusDetails.REJECTED_HIGH_RISK,
                                                   PXPayment.StatusDetails.REJECTED_CARD_HIGH_RISK,
