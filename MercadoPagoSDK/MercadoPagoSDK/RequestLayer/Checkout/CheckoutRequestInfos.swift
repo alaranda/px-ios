@@ -16,6 +16,10 @@ extension CheckoutRequestInfos: RequestInfos {
         }
     }
 
+    var environment: BackendEnvironment {
+        .gamma
+    }
+
     var method: HTTPMethodType {
         return .post
     }
