@@ -103,9 +103,9 @@ extension PXResultViewModel {
                 self.selectOther()
             } else if self.paymentResult.isWarning() {
                 switch self.paymentResult.statusDetail {
-                case PXRejectedStatusDetail.CALL_FOR_AUTH.rawValue:
+                case PXPayment.StatusDetails.REJECTED_CALL_FOR_AUTHORIZE:
                     callback(PaymentResult.CongratsState.CALL_FOR_AUTH, nil)
-                case PXRejectedStatusDetail.CARD_DISABLE.rawValue:
+                case PXPayment.StatusDetails.REJECTED_CARD_DISABLED:
                     callback(PaymentResult.CongratsState.RETRY, nil)
                 default:
                     self.selectOther()
@@ -152,9 +152,9 @@ extension PXResultViewModel {
             callback(PaymentResult.CongratsState.EXIT, nil)
         } else {
             switch self.paymentResult.statusDetail {
-            case PXRejectedStatusDetail.REJECTED_FRAUD.rawValue:
+            case PXPayment.StatusDetails.REJECTED_FRAUD:
                 callback(PaymentResult.CongratsState.EXIT, nil)
-            case PXRejectedStatusDetail.DUPLICATED_PAYMENT.rawValue:
+            case PXPayment.StatusDetails.REJECTED_DUPLICATED_PAYMENT:
                 callback(PaymentResult.CongratsState.EXIT, nil)
             default:
                 if remedy != nil {
