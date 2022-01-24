@@ -6,7 +6,7 @@ orbs:
 jobs:
   deploy:
     macos:
-      xcode: “13.1.0”
+      xcode: 13.1.0
     shell: /bin/bash --login -o pipefail
     steps:
       - checkout
@@ -14,7 +14,7 @@ jobs:
       - run:
           name: fastlane
           command: bundle exec fastlane start_new_release
-          
+
 workflows:
   version: 2
   release:
