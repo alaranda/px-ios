@@ -6,7 +6,7 @@
 default: &defaultJob
   # Set the xcode version this virtual machine will  use
   macos:
-    xcode: "12.0.0"
+    xcode: "13.1.0"
   # We need to set this for RVM.
   shell: /bin/bash --login
 # Default workflow will run on all branches except releases
@@ -16,12 +16,34 @@ deploy-workflow: &deployWorkflow
       only:
         - develop
         - /release\/.*$/
+
+version: 2.1
+
+orbs:
+  ruby: circleci/ruby@1.2.0
 # Define the jobs we will be using
-version: 2
 jobs:
+  pr_check:
+    macos:
+      xcode: "13.1.0"
+    working_directory: /Users/distiller/project
+    environment:
+      FL_OUTPUT_DIR: output
+      FASTLANE_LANE: test
+    shell: /bin/bash --login -o pipefail
+    steps:
+      - checkout
+      - ruby/install-deps
+      - run:
+          name: fastlane
+          command: bundle exec fastlane pr_check
+      - store_artifacts:
+          path: output
+      - store_test_results:
+          path: output/scan
   build-and-test:
       macos:
-          xcode: "12.4.0"
+          xcode: "13.1.0"
       environment:
           FL_OUTPUT_DIR: FL_OUTPUT_DIR
       steps:
