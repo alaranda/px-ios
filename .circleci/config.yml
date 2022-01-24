@@ -1,6 +1,8 @@
 version: 2.1
+
 orbs:
   ruby: circleci/ruby@1.2.0
+  
 jobs:
   deploy:
     macos:
@@ -12,6 +14,7 @@ jobs:
       - run:
           name: fastlane
           command: bundle exec fastlane start_new_release
+          
 workflows:
   version: 2
   release:
