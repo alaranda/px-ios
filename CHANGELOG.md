@@ -5,8 +5,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## v4.53.0
+🚀 Private Release - 4.53.0 date: 20/01/2022 🚀
+
+### Added
+- Adding post payment flow support for SEMOVI
+
 ### Fixed
 - Fixed bug with wrong suggested value for account money remedie
+- Fix show horizontally logic in summary
+- EXC_BREAKPOINT crash in resetESCCap service
 
 ## [v4.52.0] - 2021-12-06
 🚀 Private Release - 4.52.0 date: 16/12/2021 🚀

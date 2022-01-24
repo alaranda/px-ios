@@ -33,6 +33,7 @@ end
 def test_check
   cocoapods(
     clean_install: true, 
+    silent: true,
     podfile: "./ExampleSwift/Podfile"
   )
   run_tests(
