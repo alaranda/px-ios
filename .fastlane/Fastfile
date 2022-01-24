@@ -16,10 +16,10 @@ lane :pr_check do
 end
 
 def new_release
-  changelog = read_changelog
+  changelog = read_changelog(section_identifier: '[Unreleased]')
 
   if !changelog.gsub(/\s+/, "").empty?
-    # test_check
+    test_check
     version = bump_podspec
     create_release_pull_request(version, changelog)
     pod_release(version)
