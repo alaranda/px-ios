@@ -46,6 +46,6 @@ extension CheckoutRequestInfos: RequestInfos {
     }
 
     var mockURL: URL? {
-        return nil
+        return URL(string: "https://run.mocky.io/v3/939c8dd3-c42c-4d69-a0ea-e3fece9b9392")
     }
 }

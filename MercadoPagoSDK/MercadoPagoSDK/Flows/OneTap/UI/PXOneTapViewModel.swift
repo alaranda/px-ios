@@ -60,6 +60,31 @@ extension PXOneTapViewModel {
 
             let statusConfig = getStatusConfig(currentStatus: targetNode.status, cardId: targetNode.oneTapCard?.cardId, paymentMethodId: targetNode.paymentMethodId)
 
+            if targetNode.paymentTypeId == "open_banking" {
+                var newCardData: PXAddNewMethodData?
+                if let newCard = targetNode.newCard {
+                    newCardData = PXAddNewMethodData(title: newCard.label, subtitle: newCard.descriptionText)
+                }
+                var newOfflineData: PXAddNewMethodData?
+                if let offlineMethods = targetNode.offlineMethods {
+                    newOfflineData = PXAddNewMethodData(title: offlineMethods.label, subtitle: offlineMethods.descriptionText)
+                }
+
+                let emptyCard = EmptyCard(newCardData: newCardData, newOfflineData: newOfflineData)
+
+                var cardSliderApplications: [PXApplicationId: PXCardSliderApplicationData] = [:]
+
+                let cardSliderApplication = PXCardSliderApplicationData(paymentMethodId: "", paymentTypeId: "", cardData: nil, cardUI: emptyCard, payerCost: [PXPayerCost](), selectedPayerCost: nil, shouldShowArrow: false, amountConfiguration: nil, status: statusConfig, bottomMessage: chargeRuleMessage, benefits: benefits, payerPaymentMethod: nil, behaviours: targetNode.behaviours, displayInfo: targetNode.displayInfo, displayMessage: nil)
+
+                cardSliderApplications[""] = cardSliderApplication
+
+                let viewModelCard = PXCardSliderViewModel(cardSliderApplications, "", "", displayInfo: targetNode.displayInfo, comboSwitch: nil)
+
+                sliderModel.append(viewModelCard)
+
+                continue
+            }
+
             // Add New Card and Offline Payment Methods
             if targetNode.newCard != nil || targetNode.offlineMethods != nil {
                 var newCardData: PXAddNewMethodData?
