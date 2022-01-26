@@ -56,8 +56,7 @@ class PXResourceProvider {
     }
 
     static func getDescriptionForErrorBodyForREJECTED_OTHER_REASON() -> String {
-        let key = error_body_description_base + PXPayment.StatusDetails.REJECTED_OTHER_REASON
-        return key.localized
+        return error_body_message_default.localized
     }
 
     static func getDescriptionForErrorBodyForREJECTED_BY_BANK() -> String {

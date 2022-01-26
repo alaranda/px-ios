@@ -39,7 +39,8 @@ class PaymentResult {
                                                   PXPayment.StatusDetails.REJECTED_INVALID_INSTALLMENTS,
                                                   PXPayment.StatusDetails.REJECTED_BAD_FILLED_CARD_NUMBER,
                                                   PXPayment.StatusDetails.REJECTED_BAD_FILLED_OTHER,
-                                                  PXPayment.StatusDetails.REJECTED_CALL_FOR_AUTHORIZE]
+                                                  PXPayment.StatusDetails.REJECTED_CALL_FOR_AUTHORIZE,
+                                                   PXPayment.StatusDetails.REJECTED_CAP_EXCEEDED]
 
     var paymentData: PXPaymentData?
     var splitAccountMoney: PXPaymentData?
