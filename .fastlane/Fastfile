@@ -121,14 +121,17 @@ lane :pr_check do
     test_without_building: "true",
     scheme: "MercadoPagoSDKV4-Unit-MercadoPagoSDKTests"
   )
-  match(app_identifier: "com.mercadolibre.*", type: "development", readonly: true)
-  gym
-  sh "bash ./scripts/saucelabs.sh"
   danger(
     danger_id: "danger_pr",
     verbose: true,
     github_api_token: ENV["GITHUB_API_TOKEN"]
   )
+end
+
+lane :integration_tests do
+  match(app_identifier: "com.mercadolibre.*", type: "development", readonly: true)
+  gym
+  sh "bash ./scripts/saucelabs.sh"
 end
 
 lane :communicate_build_to_slack do |options|
