@@ -117,9 +117,8 @@ lane :pr_check do
     podfile: "./ExampleSwift/Podfile"
   )
   run_tests(
-    workspace: "./ExampleSwift/ExampleSwift.xcworkspace",
-    test_without_building: "true",
-    scheme: "MercadoPagoSDKV4-Unit-MercadoPagoSDKTests"
+    workspace: "ExampleSwift/ExampleSwift.xcworkspace",
+    scheme: "ExampleSwift"
   )
   danger(
     danger_id: "danger_pr",
@@ -129,9 +128,28 @@ lane :pr_check do
 end
 
 lane :integration_tests do
+  cocoapods(
+    clean_install: true,
+    podfile: "./ExampleSwift/Podfile"
+  )
   match(app_identifier: "com.mercadolibre.*", type: "development", readonly: true)
   gym
   sh "bash ./scripts/saucelabs.sh"
+end
+
+lane :build_example_local do
+  xcodebuild(
+    {
+      clean: true,
+      build: true,
+      derivedDataPath: "./ExampleSwift/build",
+      workspace: "./ExampleSwift/ExampleSwift.xcworkspace",
+      output_name: "ExampleSwift.app",
+      scheme: "ExampleSwift",
+      sdk: "iphonesimulator",
+      xcargs: "ONLY_ACTIVE_ARCH=NO"
+    }
+  )
 end
 
 lane :communicate_build_to_slack do |options|
