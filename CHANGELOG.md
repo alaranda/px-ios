@@ -15,10 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fixed post payment notification for SEMOVI
 
-### Fixed
-- Fixed post payment notification for SEMOVI
-
-## v4.53.0d
+## v4.53.0
 🚀 Private Release - 4.53.0 date: 20/01/2022 🚀
 
 ### Added
