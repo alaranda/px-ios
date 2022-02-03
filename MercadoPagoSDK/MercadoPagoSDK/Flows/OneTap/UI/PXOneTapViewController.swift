@@ -92,7 +92,6 @@ final class PXOneTapViewController: MercadoPagoUIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        unsubscribeFromNotifications()
         removePulseViewNotifications()
         removeNavigationTapGesture()
         navigationController?.setNavigationBarHidden(shouldHideOneTapNavBar, animated: animated)
@@ -112,6 +111,10 @@ final class PXOneTapViewController: MercadoPagoUIViewController {
         setupAutoDisplayOfflinePaymentMethods()
         UIAccessibility.post(notification: .layoutChanged, argument: headerView?.getMerchantView()?.getMerchantTitleLabel())
         trackScreen(event: MercadoPagoUITrackingEvents.reviewOneTap(viewModel.getOneTapScreenProperties(oneTapApplication: viewModel.applications)))
+    }
+
+    deinit {
+        unsubscribeFromNotifications()
     }
 
     override func viewDidLayoutSubviews() {
@@ -677,7 +680,27 @@ extension PXOneTapViewController: PXCardSliderProtocol {
                 currentPaymentData.transactionAmount = NSDecimalNumber(string: String(viewModel.amountHelper.preferenceAmountWithCharges))
             }
 
+            currentPaymentData.paymentMethod?.bankTransferDisplayInfo = selectedApplication.payerPaymentMethod?.displayInfo
+
             currentPaymentData.paymentOptionId = targetModel.cardId ?? targetModel.selectedApplication?.paymentMethodId
+
+            if selectedApplication.paymentTypeId == PXPaymentTypes.BANK_TRANSFER.rawValue {
+                let transactionInfo = PXTransactionInfo()
+
+                let bankInfo = PXBankInfo()
+
+                bankInfo.accountId = selectedApplication.payerPaymentMethod?.id
+
+                transactionInfo.bankInfo = bankInfo
+
+                if let financialInstitution = newPaymentMethod.financialInstitutions?[0] {
+                    transactionInfo.financialInstitutionId = financialInstitution.id
+                }
+
+                currentPaymentData.transactionInfo = transactionInfo
+            } else {
+                currentPaymentData.transactionInfo = nil
+            }
 
             callbackUpdatePaymentOption(targetModel)
             loadingButtonComponent?.setEnabled()
