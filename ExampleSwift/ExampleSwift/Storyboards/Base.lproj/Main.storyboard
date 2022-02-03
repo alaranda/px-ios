@@ -45,7 +45,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Yu-7c-2ky">
                                 <rect key="frame" x="16" y="123" width="343" height="44"/>
                                 <color key="backgroundColor" name="andes-blue-ml-400"/>
-                                <accessibility key="accessibilityConfiguration" identifier="btnInitCustom"/>
+                                <accessibility key="accessibilityConfiguration" identifier="asldn"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="Oys-cD-Cxo"/>
                                 </constraints>
