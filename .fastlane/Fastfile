@@ -4,20 +4,15 @@ fastlane_version "2.199.0"
 
 desc "Starts a new minor release X.^.0"
 lane :new_release_lane do
-  wrap { new_release() }
+  lane_wrapper ->(){ new_release() }
 end 
 
 lane :pr_check_lane do
-  wrap { pr_check() }
+  lane_wrapper ->(){ pr_check() }
 end
 
 lane :integration_tests_lane do
-  wrap { integration_tests() }
-end
-
-lane :test do 
-  wrap { success_case }
-  wrap { error_case }
+  lane_wrapper ->(){ integration_tests() }
 end
 
 def success_case
@@ -41,15 +36,14 @@ lane :build_example_local do
       xcargs: "ONLY_ACTIVE_ARCH=NO"
     }
   )
+end
 
-def wrap(block) 
+def lane_wrapper(block) 
   begin 
-    yield block
+    block.call()
   rescue Exception => e
     on_error(e)
   end
-end
-
 end
 
 def new_release
