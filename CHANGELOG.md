@@ -6,11 +6,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## v4.54.0
+### Added
+- Add DEBIN implementation
+
+### Changed
+- Changed discounts icon in Summary to match charges icon
+- Changed loader animation for post payment flow for SEMOVI
+
+### Fixed
+- Fixed post payment notification for SEMOVI
+
 ## v4.53.0
 🚀 Private Release - 4.53.0 date: 20/01/2022 🚀
 
 ### Added
 - Adding post payment flow support for SEMOVI
+- Debin implementation
 
 ### Fixed
 - Fixed bug with wrong suggested value for account money remedie

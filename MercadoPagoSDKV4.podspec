@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "MercadoPagoSDKV4"
-  s.version          = "4.53.0"
+  s.version          = "4.54.3"
   s.summary          = "MercadoPagoSDK"
   s.homepage         = "https://www.mercadopago.com"
   s.license          = { :type => "MIT", :file => "LICENSE" }
@@ -42,6 +42,7 @@ Pod::Spec.new do |s|
   end
 
   s.test_spec 'MercadoPagoSDKTests' do |test_spec|
+    test_spec.requires_app_host = false
     test_spec.source_files = 'MercadoPagoSDK/MercadoPagoSDKTests/*'
     test_spec.frameworks = 'XCTest'
   end

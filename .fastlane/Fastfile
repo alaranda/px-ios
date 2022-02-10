@@ -2,21 +2,58 @@
 # Update this, if you use features of a newer version
 fastlane_version "2.199.0"
 
-desc 'Starts a new minor release X.^.0'
-lane :start_new_release do
-  new_release
+desc "Starts a new minor release X.^.0"
+lane :new_release_lane do
+  wrap { new_release() }
 end 
 
-lane :pr_check do
-  test_check
-  danger(
-    verbose: true, 
-    github_api_token: ENV["GITHUB_API_TOKEN"]
+lane :pr_check_lane do
+  wrap { pr_check() }
+end
+
+lane :integration_tests_lane do
+  wrap { integration_tests() }
+end
+
+lane :test do 
+  wrap { success_case }
+  wrap { error_case }
+end
+
+def success_case
+  UI.message('Success')
+end
+
+def error_case
+  throw 'Error'
+end
+
+lane :build_example_local do
+  xcodebuild(
+    {
+      clean: true,
+      build: true,
+      derivedDataPath: "./ExampleSwift/build",
+      workspace: "./ExampleSwift/ExampleSwift.xcworkspace",
+      output_name: "ExampleSwift.app",
+      scheme: "ExampleSwift",
+      sdk: "iphonesimulator",
+      xcargs: "ONLY_ACTIVE_ARCH=NO"
+    }
   )
+
+def wrap(block) 
+  begin 
+    yield block
+  rescue Exception => e
+    on_error(e)
+  end
+end
+
 end
 
 def new_release
-  changelog = read_changelog(section_identifier: '[Unreleased]')
+  changelog = read_changelog(section_identifier: "[Unreleased]")
 
   if !changelog.gsub(/\s+/, "").empty?
     test_check
@@ -28,6 +65,24 @@ def new_release
   else 
     slack_nothing_to_release_notification
   end
+end
+
+def pr_check 
+  test_check
+  danger(
+    verbose: true, 
+    github_api_token: ENV["GITHUB_API_TOKEN"]
+  )
+end
+
+def integration_tests
+  cocoapods(
+    clean_install: true,
+    podfile: "./ExampleSwift/Podfile"
+  )
+  match(app_identifier: "com.mercadolibre.*", type: "development", readonly: true)
+  gym
+  sh("bash", "./scripts/saucelabs.sh")
 end
 
 def test_check
@@ -46,14 +101,12 @@ def pod_release(version)
   version_bump_podspec(path: "MercadoPagoSDKV4.podspec", version_number: version)
 
   if not `pod repo list`.strip.split("\n").include?("MLPods")
-    unless system("pod repo add mobile-ios_specs git@github.com:mercadolibre/mobile-ios_specs.git")
-      raise 'Private deploy has failed. Check the above log'
-    end 
+    sh("pod", "repo", "add", "MLPods", "git@github.com:mercadolibre/mobile-ios_specs.git")
   end
 
   pod_push(
     path: "MercadoPagoSDKV4.podspec", 
-    repo: "mobile-ios_specs",
+    repo: "MLPods",
     allow_warnings: true,
     skip_import_validation: true, 
     skip_tests: true
@@ -61,7 +114,7 @@ def pod_release(version)
 end
 
 def bump_podspec
-  sh('git fetch --tags')
+  sh("git", "fetch", "--tags")
   last_version = git_tags
     .select { |tag| /^version\/[0-9]+\.[0-9]+\.[0-9]+$/.match?(tag) }
     .map { |tag| tag.delete_prefix("version/") }
@@ -73,7 +126,6 @@ end
 
 def create_release_pull_request(new_version, changelog)
   tag_name = "version/#{new_version}"
-  UI.message("tag name: #{tag_name}")
   add_git_tag(tag: tag_name)
   stamp_changelog(
     section_identifier: new_version, 
@@ -99,8 +151,8 @@ end
 
 def github_release(changelog)
   set_github_release(
-    repository_name: 'mercadopago/px-ios',
-    api_token: ENV['GITHUB_TOKEN'],
+    repository_name: "mercadopago/px-ios",
+    api_token: ENV["GITHUB_TOKEN"],
     name: "Release #{new_version}",
     tag_name: "version/#{new_version}",
     description: changelog,
@@ -137,7 +189,7 @@ def slack_release_notification
   pod_version = version_get_podspec(path: "MercadoPagoSDKV4.podspec")
   slack(
     message: "🕺 Lib de PX publicada 💃 @px-iosers",
-    username: 'Release PX',
+    username: "Release PX",
     default_payloads: [:git_author],
     attachment_properties: {
       fields: [
@@ -148,7 +200,7 @@ def slack_release_notification
             title: "📝What´s new? RC Notes",
             value: "https://github.com/mercadopago/px-ios/releases/tag/release/#{pod_version}"
         }, {
-          title: "Release pull request (don't forget to merge it)",
+          title: "Release pull request (don\"t forget to merge it)",
           value: def_context[SharedValues::CREATE_PULL_REQUEST_HTML_URL]
         }
       ]
@@ -158,15 +210,15 @@ end
 
 def slack_nothing_to_release_notification
   slack(
-    message: "There won't be a release on this week! No changes needed to be deploy (according to CHANGELOG) @px-iosers",
-    username: 'Release PX'
+    message: "There won\"t be a release on this week! No changes needed to be deploy (according to CHANGELOG) @px-iosers",
+    username: "Release PX"
   )
 end
 
 def on_error(exception)
   slack(
     message: "@px-iosers #{exception}", 
-    username: 'Release PX', 
+    username: "Release PX", 
     success: false
   )
 end
