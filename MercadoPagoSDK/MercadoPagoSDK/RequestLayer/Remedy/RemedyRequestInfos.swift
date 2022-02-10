@@ -33,6 +33,10 @@ extension RemedyRequestInfos: RequestInfos {
             ]
         }
     }
+    
+    var environment: BackendEnvironment {
+        .gamma
+    }
 
     var accessToken: String? {
         switch self {
