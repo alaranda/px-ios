@@ -9,15 +9,5 @@
         
       </testcase>
     
-      
-      <testcase classname="fastlane.lanes" name="1: git_tags" time="5.852143">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="2: version_bump_podspec" time="0.00141">
-        
-      </testcase>
-    
   </testsuite>
 </testsuites>
