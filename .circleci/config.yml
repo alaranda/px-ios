@@ -10,10 +10,11 @@ jobs:
     shell: /bin/bash --login -o pipefail
     steps:
       - checkout
+      - add_ssh_keys
       - ruby/install-deps
       - run:
           name: fastlane
-          command: bundle exec fastlane start_new_release
+          command: bundle exec fastlane new_release_lane
 
 workflows:
   version: 2

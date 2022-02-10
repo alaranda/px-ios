@@ -13,26 +13,42 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 # Available Actions
 
-### start_new_release
+### new_release_lane
 
 ```sh
-[bundle exec] fastlane start_new_release
+[bundle exec] fastlane new_release_lane
 ```
 
 Starts a new minor release X.^.0
 
-### pr_check
+### pr_check_lane
 
 ```sh
-[bundle exec] fastlane pr_check
+[bundle exec] fastlane pr_check_lane
 ```
 
 
 
-### bump_podspec
+### integration_tests_lane
 
 ```sh
-[bundle exec] fastlane bump_podspec
+[bundle exec] fastlane integration_tests_lane
+```
+
+
+
+### test
+
+```sh
+[bundle exec] fastlane test
+```
+
+
+
+### build_example_local
+
+```sh
+[bundle exec] fastlane build_example_local
 ```
 
 

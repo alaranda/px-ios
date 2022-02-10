@@ -4,20 +4,15 @@ fastlane_version "2.199.0"
 
 desc "Starts a new minor release X.^.0"
 lane :new_release_lane do
-  wrap { new_release() }
+  lane_wrapper ->(){ new_release() }
 end 
 
 lane :pr_check_lane do
-  wrap { pr_check() }
+  lane_wrapper ->(){ pr_check() }
 end
 
 lane :integration_tests_lane do
-  wrap { integration_tests() }
-end
-
-lane :test do 
-  wrap { success_case }
-  wrap { error_case }
+  lane_wrapper ->(){ integration_tests() }
 end
 
 def success_case
@@ -41,22 +36,21 @@ lane :build_example_local do
       xcargs: "ONLY_ACTIVE_ARCH=NO"
     }
   )
+end
 
-def wrap(block) 
+def lane_wrapper(block) 
   begin 
-    yield block
+    block.call()
   rescue Exception => e
     on_error(e)
   end
-end
-
 end
 
 def new_release
   changelog = read_changelog(section_identifier: "[Unreleased]")
 
   if !changelog.gsub(/\s+/, "").empty?
-    test_check
+    # test_check
     version = bump_podspec
     create_release_pull_request(version, changelog)
     pod_release(version)
@@ -100,8 +94,14 @@ end
 def pod_release(version)
   version_bump_podspec(path: "MercadoPagoSDKV4.podspec", version_number: version)
 
+  # if not `pod repo list`.strip.split("\n").include?("MLPods")
+  #   sh("pod", "repo", "add", "MLPods", "git@github.com:mercadolibre/mobile-ios_specs.git")
+  # end
+
   if not `pod repo list`.strip.split("\n").include?("MLPods")
-    sh("pod", "repo", "add", "MLPods", "git@github.com:mercadolibre/mobile-ios_specs.git")
+    unless system("pod repo add MLPods #{ENV['POD_SPECS_REPO_TO_PUBLISH']}")
+        raise 'Private deploy has failed. Check the above log'
+    end
   end
 
   pod_push(
