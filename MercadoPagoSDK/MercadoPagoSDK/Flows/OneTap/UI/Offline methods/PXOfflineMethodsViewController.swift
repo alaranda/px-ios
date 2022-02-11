@@ -448,6 +448,10 @@ extension PXOfflineMethodsViewController: PXAnimatedButtonDelegate {
             currentPaymentData.paymentMethod = newPaymentMethod
             currentPaymentData.issuer = nil
             trackEvent(event: PXOfflineMethodsTrackingEvents.didConfirm(viewModel.getEventTrackingProperties(selectedOfflineMethod)))
+
+            // to do - rafaela galdino
+            trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(viewModel.getEventTrackingProperties(selectedOfflineMethod)))
+
             if let payerCompliance = viewModel.getPayerCompliance(), payerCompliance.offlineMethods.isCompliant {
                 currentPaymentData.payer?.firstName = viewModel.getPayerFirstName()
                 currentPaymentData.payer?.lastName = viewModel.getPayerLastName()

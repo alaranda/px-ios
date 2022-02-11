@@ -72,6 +72,9 @@ final class PXSecurityCodeViewController: MercadoPagoUIViewController {
 private extension PXSecurityCodeViewController {
     func confirmPayment() {
         trackEvent(event: PXSecurityCodeTrackingEvents.didConfirmCode(viewModel.getScreenProperties()))
+
+        // to do - rafaela galdino
+        trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(viewModel.getScreenProperties()))
         doPayment()
     }
 

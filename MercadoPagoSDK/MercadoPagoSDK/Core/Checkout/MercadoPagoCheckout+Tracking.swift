@@ -21,7 +21,22 @@ extension MercadoPagoCheckout {
         properties["split_enabled"] = viewModel.paymentPlugin?.supportSplitPaymentMethodPayment(checkoutStore: PXCheckoutStore.sharedInstance) ?? false
 
         MPXTracker.sharedInstance.trackEvent(event: MercadoPagoCheckoutTrackingEvents.didInitFlow(properties))
+        trackingInfoGeneral()
         then()
+    }
+
+    func trackingInfoGeneral() {
+        var properties: [String: Any] = [:]
+//        properties["extra_info"] =
+//        properties["payment_status"] =
+//        properties["payment_status_detail"] =
+//        properties["operational_system"] =
+        properties["device_name"] = PXVendorSpecificAttributes().deviceName
+//        properties["connection_type"] =
+//        properties["payment_method_id"] =
+//        properties["access_type"] =
+//        properties["version_lib"] =
+        properties["access_location"] = viewModel.mercadoPagoServices.getLanguage()
     }
 
     func trackInitFlowFriction(flowError: InitFlowError) {
