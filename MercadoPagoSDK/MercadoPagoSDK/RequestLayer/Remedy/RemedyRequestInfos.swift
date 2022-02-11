@@ -24,6 +24,10 @@ extension RemedyRequestInfos: RequestInfos {
         case .getRemedy: return nil
         }
     }
+    
+    var environment: BackendEnvironment {
+        .gamma
+    }
 
     var parameters: [String: Any]? {
         switch self {

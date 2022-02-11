@@ -31,6 +31,10 @@ extension CheckoutRequestInfos: RequestInfos {
         case .getInit(_, _, _, let header): return header
         }
     }
+    
+    var environment: BackendEnvironment {
+        .gamma
+    }
 
     var parameters: [String: Any]? {
         switch self {
