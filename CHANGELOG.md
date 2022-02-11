@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.51.18] - 2022-02-11Z
+
 ## v4.54.0
 ### Added
 - Add DEBIN implementation
@@ -1025,4 +1027,5 @@ Readme
 https://github.com/mercadopago/px-ios/blob/4.0.11/README.md
 
 Documentation reference
+http://mercadopago.github.io/px-ios/v4/
 http://mercadopago.github.io/px-ios/v4/
