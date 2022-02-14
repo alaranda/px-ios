@@ -55,7 +55,7 @@ final class PXOfflineMethodsViewController: MercadoPagoUIViewController {
         super.viewDidAppear(animated)
         sheetViewController?.scrollView = tableView
         trackScreen(event: MercadoPagoUITrackingEvents.offlineMethodds(viewModel.getScreenTrackingProperties()))
-        trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments("OfflineMethods", viewModel.trackingInfoGeneral(viewModel.getScreenTrackingProperties()))
+//        trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments("OfflineMethods", viewModel.trackingInfoGeneral(viewModel.getScreenTrackingProperties())))
     }
 
     override func viewDidDisappear(_ animated: Bool) {
