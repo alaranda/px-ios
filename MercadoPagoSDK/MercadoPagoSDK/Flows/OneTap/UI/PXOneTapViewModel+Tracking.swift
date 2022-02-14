@@ -93,6 +93,16 @@ extension PXOneTapViewModel {
         return properties
     }
 
+    func trackingInfoGeneral() -> [String: Any] {
+        guard let paymentMethod = amountHelper.getPaymentData().paymentMethod else { return [:] }
+        var properties: [String: Any] = [:]
+
+        properties["payment_status"] = paymentMethod.status
+        properties["payment_method_id"] = paymentMethod.id
+
+        return properties
+    }
+
     func getOneTapScreenProperties(oneTapApplication: [PXOneTapApplication]) -> [String: Any] {
         var properties: [String: Any] = [:]
         let availablePMQuantity = getPaymentMethodsQuantityForTracking(enabled: true)

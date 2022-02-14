@@ -520,8 +520,9 @@ extension PXOneTapViewController {
             viewModel.amountHelper.getPaymentData().payerCost = selectedApplication.selectedPayerCost
             let properties = viewModel.getConfirmEventProperties(selectedCard: selectedCardItem, selectedIndex: slider.getSelectedIndex())
             trackEvent(event: OneTapTrackingEvents.didConfirmPayment(properties))
-            // to do - rafaela galdino
-            trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(properties))
+
+            let propertiesGeneral = viewModel.trackingInfoGeneral()
+            trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(propertiesGeneral))
         }
         let splitPayment = viewModel.splitPaymentEnabled
         hideBackButton()

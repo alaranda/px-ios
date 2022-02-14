@@ -27,16 +27,13 @@ extension MercadoPagoCheckout {
 
     func trackingInfoGeneral() {
         var properties: [String: Any] = [:]
-//        properties["extra_info"] =
-//        properties["payment_status"] =
-//        properties["payment_status_detail"] =
 //        properties["operational_system"] =
         properties["device_name"] = PXVendorSpecificAttributes().deviceName
 //        properties["connection_type"] =
-//        properties["payment_method_id"] =
-//        properties["access_type"] =
-//        properties["version_lib"] =
+//        properties["access_type"] = * tipo de acesso
+        properties["version_lib"] = MLBusinessAppDataService().getAppVersion()
         properties["access_location"] = viewModel.mercadoPagoServices.getLanguage()
+        MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(properties))
     }
 
     func trackInitFlowFriction(flowError: InitFlowError) {
