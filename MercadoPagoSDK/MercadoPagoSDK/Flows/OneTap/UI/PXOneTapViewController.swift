@@ -111,6 +111,7 @@ final class PXOneTapViewController: MercadoPagoUIViewController {
         setupAutoDisplayOfflinePaymentMethods()
         UIAccessibility.post(notification: .layoutChanged, argument: headerView?.getMerchantView()?.getMerchantTitleLabel())
         trackScreen(event: MercadoPagoUITrackingEvents.reviewOneTap(viewModel.getOneTapScreenProperties(oneTapApplication: viewModel.applications)))
+        trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(viewModel.trackingInfoGeneral()))
     }
 
     deinit {

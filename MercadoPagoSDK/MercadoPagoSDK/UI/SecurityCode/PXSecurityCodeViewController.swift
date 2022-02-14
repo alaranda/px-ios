@@ -73,8 +73,7 @@ private extension PXSecurityCodeViewController {
     func confirmPayment() {
         trackEvent(event: PXSecurityCodeTrackingEvents.didConfirmCode(viewModel.getScreenProperties()))
 
-        // to do - rafaela galdino
-        trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(viewModel.getScreenProperties()))
+        trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(viewModel.trackingInfoGenereal()))
         doPayment()
     }
 
@@ -379,5 +378,6 @@ extension PXSecurityCodeViewController: AndesTextFieldCodeDelegate {
 private extension PXSecurityCodeViewController {
     func trackScreenView() {
         trackScreen(event: MercadoPagoUITrackingEvents.secureCode(viewModel.getScreenProperties()), treatBackAsAbort: true)
+        trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(viewModel.trackingInfoGenereal())))
     }
 }

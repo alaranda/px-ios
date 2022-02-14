@@ -404,7 +404,7 @@ extension PXResultViewModel: PXViewModelTrackingDataProtocol {
         properties["device_name"] = PXVendorSpecificAttributes().deviceName
         properties["payment_method_id"] = paymentResult.paymentMethodId
 
-        MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(properties))
+        MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(properties))
     }
 
     func getTrackingRemediesProperties(isFromModal: Bool) -> [String: Any] {

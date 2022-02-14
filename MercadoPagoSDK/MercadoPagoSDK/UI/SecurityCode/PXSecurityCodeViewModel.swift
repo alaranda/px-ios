@@ -121,6 +121,13 @@ extension PXSecurityCodeViewModel {
         return properties
     }
 
+        func trackingInfoGenereal() -> [String: Any] {
+        var properties: [String: Any] = [:]
+        properties["payment_status"] = paymentMethod.status
+        properties["payment_method_id"] = paymentMethod.getPaymentIdForTracking()
+        return properties
+    }
+    
     func getNoConnectionProperties() -> [String: Any] {
         var properties: [String: Any] = [:]
         properties["path"] = "/px_checkout/no_connection"
