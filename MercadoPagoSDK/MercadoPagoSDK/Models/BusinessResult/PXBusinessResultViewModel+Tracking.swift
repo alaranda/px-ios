@@ -96,6 +96,7 @@ extension PXBusinessResultViewModel: PXViewModelTrackingDataProtocol {
         } else if paymentStatus == PXPaymentStatus.REJECTED.rawValue {
             screenPath = .checkoutPaymentRejected(getTrackingProperties())
         }
+
         return screenPath
     }
 
@@ -130,6 +131,14 @@ extension PXBusinessResultViewModel: PXViewModelTrackingDataProtocol {
        }
 
        return properties
+    }
+
+    func trackingInfoGeneral() {
+        var properties = [String: Any]()
+        properties["current_step"] = "Congrats"
+        properties["payment_status"] = businessResult.paymentStatus
+        properties["payment_status_detail"] = businessResult.paymentStatusDetail
+        MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(properties))
     }
 
     func getTrackingRemediesProperties(isFromModal: Bool) -> [String: Any] {

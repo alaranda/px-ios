@@ -138,9 +138,10 @@ extension PXOfflineMethodsViewModel {
         properties["extra_info"] = info
         return properties
     }
-    
+
     func trackingInfoGeneral(_ selectedOfflineMethod: PXOfflinePaymentMethod) -> [String: Any] {
         var properties = [String: Any]()
+        properties["current_step"] = "OfflineMethod"
         properties["payment_method_id"] = selectedOfflineMethod.id
         properties["payment_status"] = selectedOfflineMethod.status
         return properties

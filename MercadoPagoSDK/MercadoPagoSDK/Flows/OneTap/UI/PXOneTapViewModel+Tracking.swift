@@ -97,6 +97,7 @@ extension PXOneTapViewModel {
         guard let paymentMethod = amountHelper.getPaymentData().paymentMethod else { return [:] }
         var properties: [String: Any] = [:]
 
+        properties["current_step"] = "OneTap"
         properties["payment_status"] = paymentMethod.status
         properties["payment_method_id"] = paymentMethod.id
 
