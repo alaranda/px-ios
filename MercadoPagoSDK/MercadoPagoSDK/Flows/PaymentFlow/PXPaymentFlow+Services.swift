@@ -2,6 +2,7 @@ import Foundation
 
 extension PXPaymentFlow {
     func createPaymentWithPlugin(plugin: PXSplitPaymentProcessor?, programId: String?) {
+        // to do - incluir track
         guard let plugin = plugin else {
             showError()
             return
@@ -19,6 +20,7 @@ extension PXPaymentFlow {
     }
 
     func createPayment(programId: String?) {
+        // todo - incluir track
         guard model.amountHelper?.getPaymentData() != nil, model.checkoutPreference != nil else {
             showError()
             return

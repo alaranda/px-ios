@@ -11,7 +11,7 @@ enum PXPaymentsInfoGeneralEvents: TrackingEvents {
 
     var name: String {
         switch self {
-        case .infoGeneral_Follow_Payments: return "/px_checkout/follow/payments"
+        case .infoGeneral_Follow_Payments: return "/px_checkout/follow/payments_screen"
         case .infoGeneral_Follow_Confirm_Payments: return "/px_checkout/follow/confirm_payments_button_pressed"
         }
     }

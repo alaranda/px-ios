@@ -93,11 +93,11 @@ extension PXOneTapViewModel {
         return properties
     }
 
-    func trackingInfoGeneral() -> [String: Any] {
+    func trackingInfoGeneral(_ isScreen: Bool) -> [String: Any] {
         guard let paymentMethod = amountHelper.getPaymentData().paymentMethod else { return [:] }
         var properties: [String: Any] = [:]
 
-        properties["current_step"] = "OneTap"
+        properties["current_step"] = isScreen ? "OneTap_Screen" : "OneTap_Button_Pressed"
         properties["payment_status"] = paymentMethod.status
         properties["payment_method_id"] = paymentMethod.id
 

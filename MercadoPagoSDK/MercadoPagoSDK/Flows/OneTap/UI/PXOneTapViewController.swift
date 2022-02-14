@@ -523,7 +523,7 @@ extension PXOneTapViewController {
             trackEvent(event: OneTapTrackingEvents.didConfirmPayment(properties))
 
             let propertiesGeneral = viewModel.trackingInfoGeneral()
-            trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(propertiesGeneral))
+            trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(propertiesGeneral))
         }
         let splitPayment = viewModel.splitPaymentEnabled
         hideBackButton()

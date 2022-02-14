@@ -220,6 +220,7 @@ extension MercadoPagoCheckout {
     }
 
     private func createCardToken() {
+        // todo - incluir track
         let lastViewController = viewModel.pxNavigationHandler.navigationController.viewControllers.last
         if lastViewController is PXNewResultViewController || lastViewController is PXSecurityCodeViewController {
             getTokenizationService(needToShowLoading: false).createCardToken()
