@@ -25,7 +25,7 @@ enum PXPaymentsInfoGeneralEvents: TrackingEvents {
     var needsExternalData: Bool {
         switch self {
         case .infoGeneral_Follow_Payments, .infoGeneral_Follow_Confirm_Payments:
-            return false
+            return true
         }
     }
 }

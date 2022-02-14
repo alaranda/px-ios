@@ -111,7 +111,7 @@ final class PXOneTapViewController: MercadoPagoUIViewController {
         setupAutoDisplayOfflinePaymentMethods()
         UIAccessibility.post(notification: .layoutChanged, argument: headerView?.getMerchantView()?.getMerchantTitleLabel())
         trackScreen(event: MercadoPagoUITrackingEvents.reviewOneTap(viewModel.getOneTapScreenProperties(oneTapApplication: viewModel.applications)))
-        trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(viewModel.trackingInfoGeneral()))
+        trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(viewModel.trackingInfoGeneral(flow: "PXOneTapViewController")))
     }
 
     deinit {
@@ -522,7 +522,7 @@ extension PXOneTapViewController {
             let properties = viewModel.getConfirmEventProperties(selectedCard: selectedCardItem, selectedIndex: slider.getSelectedIndex())
             trackEvent(event: OneTapTrackingEvents.didConfirmPayment(properties))
 
-            let propertiesGeneral = viewModel.trackingInfoGeneral()
+            let propertiesGeneral = viewModel.trackingInfoGeneral(flow: "doPayment()")
             trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(propertiesGeneral))
         }
         let splitPayment = viewModel.splitPaymentEnabled

@@ -2,7 +2,6 @@ import Foundation
 
 extension PXPaymentFlow {
     func createPaymentWithPlugin(plugin: PXSplitPaymentProcessor?, programId: String?) {
-        // to do - incluir track
         guard let plugin = plugin else {
             showError()
             return
@@ -12,6 +11,8 @@ extension PXPaymentFlow {
             PXCheckoutStore.sharedInstance.validationProgramId = programId
         }
 
+        MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(model.trackingInfoGeneral(flow: "createPaymentWithPlugin")))
+
         plugin.didReceive?(checkoutStore: PXCheckoutStore.sharedInstance)
 
         plugin.startPayment?(checkoutStore: PXCheckoutStore.sharedInstance, errorHandler: self as PXPaymentProcessorErrorHandler, successWithBasePayment: { [weak self] basePayment in
@@ -20,7 +21,6 @@ extension PXPaymentFlow {
     }
 
     func createPayment(programId: String?) {
-        // todo - incluir track
         guard model.amountHelper?.getPaymentData() != nil, model.checkoutPreference != nil else {
             showError()
             return
@@ -31,6 +31,8 @@ extension PXPaymentFlow {
         guard let paymentBody = (try? JSONEncoder().encode(PXCheckoutStore.sharedInstance)) else {
             fatalError("Cannot make payment json body")
         }
+
+        MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(model.trackingInfoGeneral(flow: "createPayment")))
 
         var headers: [String: String] = [:]
         if let productId = model.productId {
@@ -66,6 +68,7 @@ extension PXPaymentFlow {
     }
 
     func getPointsAndDiscounts() {
+        MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(model.trackingInfoGeneral(flow: "getPointsAndDiscounts")))
         var paymentIds = [String]()
         var paymentMethodsIds = [String]()
         if let split = splitAccountMoney, let paymentMethod = split.paymentMethod?.id {

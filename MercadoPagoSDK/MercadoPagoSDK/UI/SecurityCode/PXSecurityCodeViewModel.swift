@@ -121,9 +121,9 @@ extension PXSecurityCodeViewModel {
         return properties
     }
 
-        func trackingInfoGenereal() -> [String: Any] {
+    func trackingInfoGeneral(flow: String) -> [String: Any] {
         var properties: [String: Any] = [:]
-        properties["current_step"] = "SecurityCode"
+        properties["current_step"] = flow
         properties["payment_status"] = paymentMethod.status
         properties["payment_method_id"] = paymentMethod.getPaymentIdForTracking()
         return properties

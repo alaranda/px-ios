@@ -391,21 +391,21 @@ extension PXResultViewModel: PXViewModelTrackingDataProtocol {
             properties["remedies"] = remedies
         }
 
-        trackingInfoGeneral()
+        trackingInfoGeneral(flow: "Result")
 
         return properties
     }
 
-    func trackingInfoGeneral() {
+    func trackingInfoGeneral(flow: String) -> [String: Any] {
         var properties: [String: Any] = [:]
         properties["extra_info"] = remedy?.trackingData
         properties["payment_status"] = paymentResult.status
         properties["payment_status_detail"] = paymentResult.statusDetail
         properties["device_name"] = PXVendorSpecificAttributes().deviceName
         properties["payment_method_id"] = paymentResult.paymentMethodId
-        properties["current_step"] = "Result"
-
+        properties["current_step"] = flow
         MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(properties))
+        return properties
     }
 
     func getTrackingRemediesProperties(isFromModal: Bool) -> [String: Any] {

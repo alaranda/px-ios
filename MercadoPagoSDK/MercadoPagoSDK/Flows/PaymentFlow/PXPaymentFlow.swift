@@ -137,6 +137,7 @@ final class PXPaymentFlow: NSObject, PXFlow {
     }
 
     func finishFlow() {
+        MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(model.trackingInfoGeneral(flow: "finishFlow")))
         if let paymentResult = model.paymentResult {
             self.resultHandler?.finishPaymentFlow(paymentResult: paymentResult, instructionsInfo: model.instructionsInfo, pointsAndDiscounts: model.pointsAndDiscounts)
         } else if let businessResult = model.businessResult {
@@ -172,5 +173,6 @@ private extension PXPaymentFlow {
         var properties: [String: Any] = [:]
         properties["destination"] = notification.rawValue
         MPXTracker.sharedInstance.trackEvent(event: PostPaymentTrackingEvents.willNavigateToPostPayment(properties))
+        MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(model.trackingInfoGeneral(flow: "goToPostPayment")))
     }
 }
