@@ -33,7 +33,7 @@ extension MercadoPagoCheckout {
 //        properties["access_type"] = * tipo de acesso
         properties["version_lib"] = MLBusinessAppDataService().getAppVersion()
         properties["access_location"] = viewModel.mercadoPagoServices.getLanguage()
-        MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(properties))
+        MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments("StartTracking", properties))
     }
 
     func trackInitFlowFriction(flowError: InitFlowError) {

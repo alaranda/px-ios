@@ -55,6 +55,7 @@ final class PXOfflineMethodsViewController: MercadoPagoUIViewController {
         super.viewDidAppear(animated)
         sheetViewController?.scrollView = tableView
         trackScreen(event: MercadoPagoUITrackingEvents.offlineMethodds(viewModel.getScreenTrackingProperties()))
+        trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments("OfflineMethods", viewModel.trackingInfoGeneral(viewModel.getScreenTrackingProperties()))
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -449,8 +450,7 @@ extension PXOfflineMethodsViewController: PXAnimatedButtonDelegate {
             currentPaymentData.issuer = nil
             trackEvent(event: PXOfflineMethodsTrackingEvents.didConfirm(viewModel.getEventTrackingProperties(selectedOfflineMethod)))
 
-            // to do - rafaela galdino
-            trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(viewModel.getEventTrackingProperties(selectedOfflineMethod)))
+            trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments("OfflineMethods", viewModel.trackingInfoGeneral(selectedOfflineMethod)))
 
             if let payerCompliance = viewModel.getPayerCompliance(), payerCompliance.offlineMethods.isCompliant {
                 currentPaymentData.payer?.firstName = viewModel.getPayerFirstName()

@@ -7,21 +7,21 @@ import Foundation
 
 enum PXPaymentsInfoGeneralEvents: TrackingEvents {
     case infoGeneral_Follow
-    case infoGeneral_Follow_Payments([String: Any])
-    case infoGeneral_Follow_Confirm_Payments([String: Any])
+    case infoGeneral_Follow_Payments(String, [String: Any])
+    case infoGeneral_Follow_Confirm_Payments(String, [String: Any])
 
     var name: String {
         switch self {
         case .infoGeneral_Follow: return "/px_checkout/follow"
-        case .infoGeneral_Follow_Payments: return "/px_checkout/follow/payments"
-        case .infoGeneral_Follow_Confirm_Payments: return "/px_checkout/follow/confirm_payments"
+        case .infoGeneral_Follow_Payments(let screenFlow, _): return "/px_checkout/follow/payments/\(screenFlow)"
+        case .infoGeneral_Follow_Confirm_Payments(let screenFlow, _): return "/px_checkout/follow/confirm_payments/\(screenFlow)"
         }
     }
 
     var properties: [String: Any] {
         switch self {
         case .infoGeneral_Follow: return [:]
-        case .infoGeneral_Follow_Payments(let properties), .infoGeneral_Follow_Confirm_Payments(let properties): return properties
+        case .infoGeneral_Follow_Payments(_, let properties), .infoGeneral_Follow_Confirm_Payments(_, let properties): return properties
         }
     }
 
