@@ -41,23 +41,32 @@ final class OneTapFlow: NSObject, PXFlow {
             switch self.model.nextStep() {
             case .screenOneTap:
                 self.showOneTapViewController()
+                self.trackFlow("screenOneTap")
             case .screenSecurityCode:
                 self.showSecurityCodeScreen()
+                self.trackFlow("screenSecurityCode")
             case .serviceCreateOptionalToken:
                 self.getTokenizationService().createCardTokenWithoutCVV()
+                self.trackFlow("serviceCreateOptionalToken")
             case .serviceCreateESCCardToken:
                 self.getTokenizationService().createCardToken()
+                self.trackFlow("serviceCreateESCCardToken")
             case .serviceCreateWebPayCardToken:
                 self.getTokenizationService().createCardToken(securityCode: "")
+                self.trackFlow("serviceCreateESCCardToken")
             case .screenKyC:
                 self.showKyCScreen()
+                self.trackFlow("screenKyC")
             case .service3DS:
                 guard let program = self.model.getProgramValidation(), let cardHolderName = self.model.getCardHolderName() else { return }
                 self.getThreeDSService().authorize3DS(programUsed: program, cardHolderName: cardHolderName)
+                self.trackFlow("service3DS")
             case .payment:
                 self.startPaymentFlow()
+                self.trackFlow("payment")
             case .finish:
                 self.finishFlow()
+                self.trackFlow("finish")
             }
         }
     }
@@ -168,5 +177,13 @@ extension OneTapFlow {
             return nil
         }
         return customerPaymentMethods.first(where: { $0.getCardId() == cardId && $0.getPaymentType() == paymentMethodType })
+    }
+}
+
+extension OneTapFlow {
+    private func trackFlow(_ flow: String) {
+        var properties = [String: Any]()
+        properties["current_step"] = flow
+        MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(properties))
     }
 }

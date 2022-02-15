@@ -142,22 +142,31 @@ extension MercadoPagoCheckout {
                 }
             case .SERVICE_CREATE_CARD_TOKEN:
                 self.createCardToken()
+                self.trackFlow("SERVICE_CREATE_CARD_TOKEN")
             case .SCREEN_SECURITY_CODE:
                 self.showSecurityCodeScreen()
+                self.trackFlow("SCREEN_SECURITY_CODE")
             case .SERVICE_POST_PAYMENT:
                 self.createPayment()
+                self.trackFlow("SERVICE_POST_PAYMENT")
             case .SERVICE_GET_REMEDY:
                 self.getRemedy()
+                self.trackFlow("SERVICE_GET_REMEDY")
             case .SCREEN_PAYMENT_RESULT:
                 self.showPaymentResultScreen()
+                self.trackFlow("SCREEN_PAYMENT_RESULT")
             case .ACTION_FINISH:
                 self.finish()
+                self.trackFlow("ACTION_FINISH")
             case .SCREEN_ERROR:
                 self.showErrorScreen()
+                self.trackFlow("SCREEN_ERROR")
             case .SCREEN_PAYMENT_METHOD_PLUGIN_CONFIG:
                 self.showPaymentMethodPluginConfigScreen()
+                self.trackFlow("SCREEN_PAYMENT_METHOD_PLUGIN_CONFIG")
             case .FLOW_ONE_TAP:
                 self.startOneTapFlow()
+                self.trackFlow("FLOW_ONE_TAP")
             }
         }
     }
@@ -220,7 +229,6 @@ extension MercadoPagoCheckout {
     }
 
     private func createCardToken() {
-        // todo - incluir track
         let lastViewController = viewModel.pxNavigationHandler.navigationController.viewControllers.last
         if lastViewController is PXNewResultViewController || lastViewController is PXSecurityCodeViewController {
             getTokenizationService(needToShowLoading: false).createCardToken()
@@ -251,5 +259,13 @@ extension MercadoPagoCheckout {
 
     private func defaultExitAction() {
         viewModel.pxNavigationHandler.goToRootViewController()
+    }
+}
+
+extension MercadoPagoCheckout {
+    private func trackFlow(_ flow: String) {
+        var properties = [String: Any]()
+        properties["current_step"] = flow
+        MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(properties))
     }
 }
