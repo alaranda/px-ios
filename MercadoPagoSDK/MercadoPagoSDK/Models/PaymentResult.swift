@@ -44,7 +44,7 @@ class PaymentResult {
                                                    PXPayment.StatusDetails.REJECTED_RAW_INSUFFICIENT_AMOUNT,
                                                    PXPayment.StatusDetails.REJECTED_BANK_ERROR,
                                                    PXPayment.StatusDetails.REJECTED_INVALID_ACCOUNT]
-    
+
     var paymentData: PXPaymentData?
     var splitAccountMoney: PXPaymentData?
     var status: String
