@@ -46,7 +46,6 @@ class TokenizationService {
                 savedESCCardToken = PXSavedESCCardToken(cardId: cardInfo.getCardId(), securityCode: securityCode, requireESC: requireESC)
             }
             createSavedESCCardToken(savedESCCardToken: savedESCCardToken)
-
         // Saved card token
         } else {
             guard let securityCode = securityCode else {
@@ -54,6 +53,14 @@ class TokenizationService {
             }
             createSavedCardToken(cardInformation: cardInfo, securityCode: securityCode)
         }
+        
+        trackCurrentStep("createCardToken - \(requireESC)")
+    }
+    
+    func trackCurrentStep(_ flow: String) {
+        var properties = [String: Any]()
+        properties["current_step"] = flow
+        MPXTracker.sharedInstance.trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(properties))
     }
 
     func createCardTokenWithoutCVV() {

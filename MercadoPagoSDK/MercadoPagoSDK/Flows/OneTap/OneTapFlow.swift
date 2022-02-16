@@ -53,7 +53,7 @@ final class OneTapFlow: NSObject, PXFlow {
                 self.trackFlow("serviceCreateESCCardToken")
             case .serviceCreateWebPayCardToken:
                 self.getTokenizationService().createCardToken(securityCode: "")
-                self.trackFlow("serviceCreateESCCardToken")
+                self.trackFlow("serviceCreateWebPayCardToken")
             case .screenKyC:
                 self.showKyCScreen()
                 self.trackFlow("screenKyC")
