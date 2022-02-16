@@ -47,7 +47,7 @@ final class PXOneTapViewController: MercadoPagoUIViewController {
     private var navigationBarTapGesture: UITapGestureRecognizer?
     var installmentRow = PXOneTapInstallmentInfoView()
     private var andesBottomSheet: AndesBottomSheetViewController?
-    var touchPaymentCounterButton: Int = 0
+    var amountOfButtonPress: Int = 0
 
     var cardType: MLCardDrawerTypeV3
 
@@ -112,7 +112,7 @@ final class PXOneTapViewController: MercadoPagoUIViewController {
         setupAutoDisplayOfflinePaymentMethods()
         UIAccessibility.post(notification: .layoutChanged, argument: headerView?.getMerchantView()?.getMerchantTitleLabel())
         trackScreen(event: MercadoPagoUITrackingEvents.reviewOneTap(viewModel.getOneTapScreenProperties(oneTapApplication: viewModel.applications)))
-        trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(viewModel.trackingInfoGeneral(flow: "PXOneTapViewController", counter: nil)))
+        trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(viewModel.trackingInfoGeneral(flow: "PXOneTapViewController", count: nil)))
     }
 
     deinit {
@@ -520,10 +520,10 @@ extension PXOneTapViewController {
         loadingButtonComponent?.startLoading(timeOut: timeOutPayButton)
         if let selectedCardItem = selectedCard, let selectedApplication = selectedCardItem.selectedApplication {
             viewModel.amountHelper.getPaymentData().payerCost = selectedApplication.selectedPayerCost
-            touchPaymentCounterButton += 1
+            amountOfButtonPress += 1
             let properties = viewModel.getConfirmEventProperties(selectedCard: selectedCardItem, selectedIndex: slider.getSelectedIndex())
             trackEvent(event: OneTapTrackingEvents.didConfirmPayment(properties))
-            let propertiesGeneral = viewModel.trackingInfoGeneral(flow: "doPayment()", counter: touchPaymentCounterButton)
+            let propertiesGeneral = viewModel.trackingInfoGeneral(flow: "doPayment()", count: amountOfButtonPress)
             trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(propertiesGeneral))
         }
         let splitPayment = viewModel.splitPaymentEnabled
