@@ -53,10 +53,10 @@ class TokenizationService {
             }
             createSavedCardToken(cardInformation: cardInfo, securityCode: securityCode)
         }
-        
+
         trackCurrentStep("createCardToken - \(requireESC)")
     }
-    
+
     func trackCurrentStep(_ flow: String) {
         var properties = [String: Any]()
         properties["current_step"] = flow

@@ -93,12 +93,13 @@ extension PXOneTapViewModel {
         return properties
     }
 
-    func trackingInfoGeneral(flow: String) -> [String: Any] {
+    func trackingInfoGeneral(flow: String, counter: Int?) -> [String: Any] {
         guard let paymentMethod = amountHelper.getPaymentData().paymentMethod else { return [:] }
         var properties: [String: Any] = [:]
         properties["current_step"] = flow
         properties["payment_status"] = paymentMethod.status
         properties["payment_method_id"] = paymentMethod.id
+        properties["counter_pressed_button"] = counter
         return properties
     }
 

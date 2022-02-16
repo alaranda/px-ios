@@ -13,6 +13,7 @@ final class PXSecurityCodeViewController: MercadoPagoUIViewController {
     var attemptsWithInternetError: Int = 0
     var andesTextFieldCode = AndesTextFieldCode()
     var andesTextFieldCodeIsComplete = false
+    var touchPaymentCounterButton: Int = 0
 
     // MARK: Constraints
     var loadingButtonBottomConstraint = NSLayoutConstraint()
@@ -71,8 +72,9 @@ final class PXSecurityCodeViewController: MercadoPagoUIViewController {
 // MARK: Privates
 private extension PXSecurityCodeViewController {
     func confirmPayment() {
+        touchPaymentCounterButton += 1
         trackEvent(event: PXSecurityCodeTrackingEvents.didConfirmCode(viewModel.getScreenProperties()))
-        trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(viewModel.trackingInfoGeneral(flow: "PXSecurityCodeViewController")))
+        trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(viewModel.trackingInfoGeneral(flow: "PXSecurityCodeViewController-confirmPayment", counter: touchPaymentCounterButton)))
         doPayment()
     }
 

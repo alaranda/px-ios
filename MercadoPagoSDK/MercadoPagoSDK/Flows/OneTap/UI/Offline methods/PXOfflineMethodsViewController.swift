@@ -12,6 +12,7 @@ final class PXOfflineMethodsViewController: MercadoPagoUIViewController {
     var finishButtonAnimation: (() -> Void)
     var callbackUpdatePaymentOption: ((PaymentMethodOption) -> Void)
     let timeOutPayButton: TimeInterval
+    var touchPaymentCounterButton: Int = 0
 
     let tableView = UITableView(frame: .zero, style: .grouped)
     var loadingButtonComponent: PXWindowedAnimatedButton?
@@ -448,9 +449,10 @@ extension PXOfflineMethodsViewController: PXAnimatedButtonDelegate {
             currentPaymentData.payerCost = nil
             currentPaymentData.paymentMethod = newPaymentMethod
             currentPaymentData.issuer = nil
+            touchPaymentCounterButton += 1
             trackEvent(event: PXOfflineMethodsTrackingEvents.didConfirm(viewModel.getEventTrackingProperties(selectedOfflineMethod)))
 
-            trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(viewModel.trackingInfoGeneral(selectedOfflineMethod)))
+            trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(viewModel.trackingInfoGeneral(selectedOfflineMethod, counter: touchPaymentCounterButton)))
 
             if let payerCompliance = viewModel.getPayerCompliance(), payerCompliance.offlineMethods.isCompliant {
                 currentPaymentData.payer?.firstName = viewModel.getPayerFirstName()
