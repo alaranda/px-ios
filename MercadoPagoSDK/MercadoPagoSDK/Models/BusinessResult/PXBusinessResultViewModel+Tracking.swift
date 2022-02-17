@@ -138,7 +138,7 @@ extension PXBusinessResultViewModel: PXViewModelTrackingDataProtocol {
         properties["current_step"] = flow
         properties["payment_status"] = businessResult.paymentStatus
         properties["payment_status_detail"] = businessResult.paymentStatusDetail
-        MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(properties))
+        MPXTracker.sharedInstance.trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(properties))
         return properties
     }
 

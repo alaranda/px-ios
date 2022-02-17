@@ -523,7 +523,7 @@ extension PXOneTapViewController {
             amountOfButtonPress += 1
             let properties = viewModel.getConfirmEventProperties(selectedCard: selectedCardItem, selectedIndex: slider.getSelectedIndex())
             trackEvent(event: OneTapTrackingEvents.didConfirmPayment(properties))
-            let propertiesGeneral = viewModel.trackingInfoGeneral(flow: "doPayment()", count: amountOfButtonPress)
+            let propertiesGeneral = viewModel.trackingInfoGeneral(flow: "PXOneTapViewController", count: amountOfButtonPress)
             trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(propertiesGeneral))
         }
         let splitPayment = viewModel.splitPaymentEnabled

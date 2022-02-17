@@ -184,6 +184,6 @@ extension OneTapFlow {
     private func trackFlow(_ flow: String) {
         var properties = [String: Any]()
         properties["current_step"] = flow
-        MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(properties))
+        MPXTracker.sharedInstance.trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(properties))
     }
 }
