@@ -1,12 +1,13 @@
 import Foundation
 
-@objc public class PXPaymentTypeChargeRuleBuilder: NSObject {
+@objcMembers
+public class PXPaymentTypeChargeRuleBuilder: NSObject {
     private var paymentTypeId: String
     private var amount: Double
 
-    public private(set) var taxable: Bool = true
-    public private(set) var label: String?
-    public private(set) var detailModal: UIViewController?
+    @nonobjc public private(set) var taxable: Bool = true
+    @nonobjc public private(set) var label: String?
+    @nonobjc public private(set) var detailModal: UIViewController?
 
     public init(paymentTypeId: String, amount: Double) throws {
         if amount == 0.0 {
