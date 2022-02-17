@@ -45,6 +45,14 @@ extension PXPaymentMethod {
         return false
     }
 
+    var isBankTransfer: Bool {
+        if let paymentTypeId = PXPaymentTypes(rawValue: self.paymentTypeId) {
+            return paymentTypeId.isBankTransfer()
+        }
+
+        return false
+    }
+
     var isCreditCard: Bool {
         if let paymentTypeId = PXPaymentTypes(rawValue: self.paymentTypeId) {
             return paymentTypeId.isCreditCard()
