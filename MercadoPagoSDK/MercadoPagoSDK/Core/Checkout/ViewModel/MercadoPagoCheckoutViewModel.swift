@@ -244,7 +244,16 @@ class MercadoPagoCheckoutViewModel: NSObject, NSCopying {
             updatePaymentData(suggestedPaymentMethod)
         }
 
-        return PXResultViewModel(amountHelper: amountHelper, paymentResult: paymentResult, instructionsInfo: instructionsInfo, pointsAndDiscounts: pointsAndDiscounts, resultConfiguration: advancedConfig.paymentResultConfiguration, remedy: remedy, oneTapDto: oneTapDto)
+        var debinBankName: String?
+
+        if paymentResult.paymentData?.paymentMethod?.id == PXPaymentMethodId.DEBIN.rawValue {
+            let id = paymentData.transactionInfo?.bankInfo?.accountId
+            let paymentMethodId = paymentResult.paymentData?.paymentMethod?.id
+            let paymentTypeId = paymentResult.paymentData?.paymentMethod?.paymentTypeId
+            debinBankName = search?.getPayerPaymentMethod(id: id, paymentMethodId: paymentMethodId, paymentTypeId: paymentTypeId)?.bankInfo?.name
+        }
+
+        return PXResultViewModel(amountHelper: amountHelper, paymentResult: paymentResult, instructionsInfo: instructionsInfo, pointsAndDiscounts: pointsAndDiscounts, resultConfiguration: advancedConfig.paymentResultConfiguration, remedy: remedy, oneTapDto: oneTapDto, debinBankName: debinBankName)
     }
 
     // SEARCH_PAYMENT_METHODS
