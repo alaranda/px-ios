@@ -306,18 +306,28 @@ extension PXPaymentCongratsViewModel: PXNewResultViewModelInterface {
         }
     }
 
+    func getDebinProperties() -> [String: Any]? {
+        return paymentCongrats.bankTransferProperties
+    }
+
     func getTrackingPath() -> PXResultTrackingEvents? {
         if let internalTrackingPath = paymentCongrats.internalTrackingPath as? PXResultTrackingEvents {
             return internalTrackingPath
         } else {
             var screenPath: PXResultTrackingEvents?
             let paymentStatus = paymentCongrats.type.getRawValue()
+            var properties = getTrackingProperties()
+
+            if let debinProperties = getDebinProperties() {
+                properties.merge(debinProperties) { current, _ in current }
+            }
+
             if paymentStatus == PXPaymentStatus.APPROVED.rawValue || paymentStatus == PXPaymentStatus.PENDING.rawValue {
-                screenPath = .congratsPaymentApproved(getTrackingProperties())
+                screenPath = .congratsPaymentApproved(properties)
             } else if paymentStatus == PXPaymentStatus.IN_PROCESS.rawValue {
-                screenPath = .congratsPaymentInProcess(getTrackingProperties())
+                screenPath = .congratsPaymentInProcess(properties)
             } else if paymentStatus == PXPaymentStatus.REJECTED.rawValue {
-                screenPath = .congratsPaymentRejected(getTrackingProperties())
+                screenPath = .congratsPaymentRejected(properties)
             }
 
             return screenPath
