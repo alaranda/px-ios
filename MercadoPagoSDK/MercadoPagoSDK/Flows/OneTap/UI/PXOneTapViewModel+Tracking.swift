@@ -12,7 +12,7 @@ extension PXOneTapViewModel {
                 } else if expressItem.accountMoney != nil {
                     itemForTracking = expressItem.getAccountMoneyForTracking()
                 } else {
-                    itemForTracking = expressItem.getPaymentMethodForTracking()
+                    itemForTracking = expressItem.getPaymentMethodForTracking(payerPaymentMethods: payerPaymentMethods)
                 }
 
                 if let applicationsArray = expressItem.applications {
@@ -68,7 +68,23 @@ extension PXOneTapViewModel {
 
         var properties: [String: Any] = [:]
         properties["payment_method_selected_index"] = selectedIndex
-        if paymentMethod.isCard {
+
+        if paymentMethod.isBankTransfer {
+            properties["payment_method_type"] = paymentMethod.paymentTypeId
+            properties["payment_method_id"] = paymentMethod.id
+            properties["review_type"] = "one_tap"
+            properties["bank_name"] = payerPaymentMethods.first(where: { $0.paymentMethodId == PXPaymentMethodId.DEBIN.rawValue })?.bankInfo?.name
+            properties["external_account_id"] = amountHelper.getPaymentData().transactionInfo?.bankInfo?.accountId
+            var extraInfo: [String: Any] = [:]
+            extraInfo["card_id"] = selectedCard.cardId
+            extraInfo["has_esc"] = cardIdsEsc.contains(selectedCard.cardId ?? "")
+            extraInfo["selected_installment"] = amountHelper.getPaymentData().payerCost?.getPayerCostForTracking()
+            if let issuerId = amountHelper.getPaymentData().issuer?.id {
+                extraInfo["issuer_id"] = Int64(issuerId)
+            }
+            extraInfo["has_split"] = splitPaymentEnabled
+            properties["extra_info"] = extraInfo
+        } else if paymentMethod.isCard {
             properties["payment_method_type"] = paymentMethod.paymentTypeId
             properties["payment_method_id"] = paymentMethod.id
             properties["review_type"] = "one_tap"
