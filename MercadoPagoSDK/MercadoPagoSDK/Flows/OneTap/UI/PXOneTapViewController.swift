@@ -51,6 +51,8 @@ final class PXOneTapViewController: MercadoPagoUIViewController {
 
     var cardType: MLCardDrawerTypeV3
 
+    var strategyTracking: StrategyTrackings?
+
     // MARK: Lifecycle/Publics
     init(viewModel: PXOneTapViewModel, pxOneTapContext: PXOneTapContext, timeOutPayButton: TimeInterval = 15, callbackPaymentData : @escaping ((PXPaymentData) -> Void), callbackConfirm: @escaping ((PXPaymentData, Bool) -> Void), callbackUpdatePaymentOption: @escaping ((PaymentMethodOption) -> Void), callbackRefreshInit: @escaping ((String) -> Void), callbackExit: @escaping (() -> Void), finishButtonAnimation: @escaping (() -> Void)) {
         self.viewModel = viewModel
@@ -112,7 +114,10 @@ final class PXOneTapViewController: MercadoPagoUIViewController {
         setupAutoDisplayOfflinePaymentMethods()
         UIAccessibility.post(notification: .layoutChanged, argument: headerView?.getMerchantView()?.getMerchantTitleLabel())
         trackScreen(event: MercadoPagoUITrackingEvents.reviewOneTap(viewModel.getOneTapScreenProperties(oneTapApplication: viewModel.applications)))
-        trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(viewModel.trackingInfoGeneral(flow: "PXOneTapViewController", count: nil)))
+        strategyTracking = ImpletationStrategyButton(flow_name: "PXOneTapViewController")
+        if let resultTracking = strategyTracking?.getPropertiesTrackings(deviceName: "", connectionType: "", accessType: "", versionLib: "", accessLocation: "", counter: amountOfButtonPress, paymentMethod: viewModel.amountHelper.getPaymentData().paymentMethod, offlinePaymentMethod: nil) {
+            trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(resultTracking))
+        }
     }
 
     deinit {
@@ -523,8 +528,10 @@ extension PXOneTapViewController {
             amountOfButtonPress += 1
             let properties = viewModel.getConfirmEventProperties(selectedCard: selectedCardItem, selectedIndex: slider.getSelectedIndex())
             trackEvent(event: OneTapTrackingEvents.didConfirmPayment(properties))
-            let propertiesGeneral = viewModel.trackingInfoGeneral(flow: "PXOneTapViewController", count: amountOfButtonPress)
-            trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(propertiesGeneral))
+            strategyTracking = ImpletationStrategyButton(flow_name: "PXOneTapViewController")
+            if let resultTracking = strategyTracking?.getPropertiesTrackings(deviceName: "", connectionType: "", accessType: "", versionLib: "", accessLocation: "", counter: amountOfButtonPress, paymentMethod: viewModel.amountHelper.getPaymentData().paymentMethod, offlinePaymentMethod: nil) {
+                trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(resultTracking))
+            }
         }
         let splitPayment = viewModel.splitPaymentEnabled
         hideBackButton()

@@ -29,6 +29,7 @@ open class MercadoPagoCheckout: NSObject {
 
     var businessResultVM: PXBusinessResultViewModel?
     var genericResultVM: PXResultViewModel?
+    var strategyTracking: StrategyTrackings?
 
     // MARK: Initialization
     /**

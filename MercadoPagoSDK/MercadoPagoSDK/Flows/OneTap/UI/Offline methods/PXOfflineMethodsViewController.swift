@@ -23,6 +23,8 @@ final class PXOfflineMethodsViewController: MercadoPagoUIViewController {
 
     var userDidScroll = false
 
+    var strategyTracking: StrategyTrackings?
+
     private struct Constants {
         static let viewBorderWidth: CGFloat = 1.5
         static let viewCornerRadius: CGFloat = 10
@@ -452,6 +454,11 @@ extension PXOfflineMethodsViewController: PXAnimatedButtonDelegate {
             trackEvent(event: PXOfflineMethodsTrackingEvents.didConfirm(viewModel.getEventTrackingProperties(selectedOfflineMethod)))
 
             trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(viewModel.trackingInfoGeneral(selectedOfflineMethod, count: amountOfButtonPress)))
+
+            strategyTracking = ImpletationStrategyButton(flow_name: "PXOfflineMethosViewController-doPayment")
+            if let resultTracking = strategyTracking?.getPropertiesTrackings(deviceName: "", connectionType: "", accessType: "", versionLib: "", accessLocation: "", counter: amountOfButtonPress, paymentMethod: nil, offlinePaymentMethod: selectedOfflineMethod) {
+                trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(resultTracking))
+            }
 
             if let payerCompliance = viewModel.getPayerCompliance(), payerCompliance.offlineMethods.isCompliant {
                 currentPaymentData.payer?.firstName = viewModel.getPayerFirstName()

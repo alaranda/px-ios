@@ -27,6 +27,8 @@ final class PXSecurityCodeViewController: MercadoPagoUIViewController {
     let finishButtonAnimationCallback: () -> Void
     let collectSecurityCodeCallback: (PXCardInformationForm, String?) -> Void
 
+    var strategyTracking: StrategyTrackings?
+
     init(viewModel: PXSecurityCodeViewModel, finishButtonAnimationCallback: @escaping () -> Void, collectSecurityCodeCallback: @escaping (PXCardInformationForm, String?) -> Void) {
         self.viewModel = viewModel
         self.finishButtonAnimationCallback = finishButtonAnimationCallback
@@ -74,7 +76,10 @@ private extension PXSecurityCodeViewController {
     func confirmPayment() {
         amountOfButtonPress += 1
         trackEvent(event: PXSecurityCodeTrackingEvents.didConfirmCode(viewModel.getScreenProperties()))
-        trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(viewModel.trackingInfoGeneral(flow: "PXSecurityCodeViewController-confirmPayment", count: amountOfButtonPress)))
+        strategyTracking = ImpletationStrategyButton(flow_name: "PXSecurityCodeViewController-confirmPayment")
+        if let resultTracking = strategyTracking?.getPropertiesTrackings(deviceName: "", connectionType: "", accessType: "", versionLib: "", accessLocation: "", counter: amountOfButtonPress, paymentMethod: viewModel.paymentMethod, offlinePaymentMethod: nil) {
+            trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(resultTracking))
+        }
         doPayment()
     }
 

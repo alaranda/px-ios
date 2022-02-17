@@ -121,15 +121,6 @@ extension PXSecurityCodeViewModel {
         return properties
     }
 
-    func trackingInfoGeneral(flow: String, count: Int?) -> [String: Any] {
-        var properties: [String: Any] = [:]
-        properties["current_step"] = flow
-        properties["payment_status"] = paymentMethod.status
-        properties["payment_method_id"] = paymentMethod.getPaymentIdForTracking()
-        properties["counter_pressed_button"] = count
-        return properties
-    }
-
     func getNoConnectionProperties() -> [String: Any] {
         var properties: [String: Any] = [:]
         properties["path"] = "/px_checkout/no_connection"
