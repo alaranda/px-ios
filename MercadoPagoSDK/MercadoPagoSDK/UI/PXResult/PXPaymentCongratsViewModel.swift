@@ -322,9 +322,9 @@ extension PXPaymentCongratsViewModel: PXNewResultViewModelInterface {
                 properties.merge(debinProperties) { current, _ in current }
             }
 
-            if paymentStatus == PXPaymentStatus.APPROVED.rawValue || paymentStatus == PXPaymentStatus.PENDING.rawValue {
+            if paymentStatus == PXPaymentStatus.APPROVED.rawValue {
                 screenPath = .congratsPaymentApproved(properties)
-            } else if paymentStatus == PXPaymentStatus.IN_PROCESS.rawValue {
+            } else if paymentStatus == PXPaymentStatus.IN_PROCESS.rawValue || paymentStatus == PXPaymentStatus.PENDING.rawValue {
                 screenPath = .congratsPaymentInProcess(properties)
             } else if paymentStatus == PXPaymentStatus.REJECTED.rawValue {
                 screenPath = .congratsPaymentRejected(properties)
