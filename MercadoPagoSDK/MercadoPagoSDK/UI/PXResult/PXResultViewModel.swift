@@ -336,12 +336,14 @@ extension PXResultViewModel: PXViewModelTrackingDataProtocol {
             properties.merge(debinProperties) { current, _ in current }
         }
 
-        if paymentStatus == PXPaymentStatus.APPROVED.rawValue || paymentStatus == PXPaymentStatus.PENDING.rawValue {
+        if paymentStatus == PXPaymentStatus.APPROVED.rawValue {
             screenPath = .checkoutPaymentApproved(properties)
-        } else if paymentStatus == PXPaymentStatus.IN_PROCESS.rawValue {
+        } else if paymentStatus == PXPaymentStatus.IN_PROCESS.rawValue || paymentStatus == PXPaymentStatus.PENDING.rawValue {
             screenPath = .checkoutPaymentInProcess(properties)
         } else if paymentStatus == PXPaymentStatus.REJECTED.rawValue {
             screenPath = .checkoutPaymentRejected(properties)
+        } else {
+            screenPath = .checkoutPaymentUnknown(properties)
         }
         return screenPath
     }
