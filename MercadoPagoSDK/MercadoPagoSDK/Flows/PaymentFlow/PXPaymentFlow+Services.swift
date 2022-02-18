@@ -11,11 +11,9 @@ extension PXPaymentFlow {
             PXCheckoutStore.sharedInstance.validationProgramId = programId
         }
 
-        if let businessResult = model.businessResult {
-            strategyTracking = ImpletationStrategyButton(flow_name: "createPaymentWithPlugin")
-            if let resultTracking = strategyTracking?.getPropertiesTrackings(deviceName: PXVendorSpecificAttributes().deviceName, connectionType: "", accessType: "", versionLib: MLBusinessAppDataService().getAppVersion(), accessLocation: nil, counter: 0, paymentMethod: nil, offlinePaymentMethod: nil, businessResult: businessResult) {
-                 MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(resultTracking))
-            }
+        strategyTracking = ImpletationStrategyButton(flow_name: "createPaymentWithPlugin")
+        if let resultTracking = strategyTracking?.getPropertiesTrackings(deviceName: PXVendorSpecificAttributes().deviceName, connectionType: "", accessType: "", versionLib: MLBusinessAppDataService().getAppVersion(), accessLocation: nil, counter: 0, paymentMethod: nil, offlinePaymentMethod: nil, businessResult: model.paymentResult) {
+                MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(resultTracking))
         }
 
         plugin.didReceive?(checkoutStore: PXCheckoutStore.sharedInstance)
@@ -37,11 +35,9 @@ extension PXPaymentFlow {
             fatalError("Cannot make payment json body")
         }
 
-        if let businessResult = model.businessResult {
-            strategyTracking = ImpletationStrategyButton(flow_name: "createPaymentWithPlugin")
-            if let resultTracking = strategyTracking?.getPropertiesTrackings(deviceName: PXVendorSpecificAttributes().deviceName, connectionType: "", accessType: "", versionLib: MLBusinessAppDataService().getAppVersion(), accessLocation: nil, counter: 0, paymentMethod: nil, offlinePaymentMethod: nil, businessResult: businessResult) {
-                 MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(resultTracking))
-            }
+        strategyTracking = ImpletationStrategyButton(flow_name: "createPaymentWithPlugin")
+        if let resultTracking = strategyTracking?.getPropertiesTrackings(deviceName: PXVendorSpecificAttributes().deviceName, connectionType: "", accessType: "", versionLib: MLBusinessAppDataService().getAppVersion(), accessLocation: nil, counter: 0, paymentMethod: nil, offlinePaymentMethod: nil, businessResult: model.paymentResult) {
+                MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(resultTracking))
         }
 
         var headers: [String: String] = [:]
@@ -78,12 +74,11 @@ extension PXPaymentFlow {
     }
 
     func getPointsAndDiscounts() {
-        if let businessResult = model.businessResult {
-            strategyTracking = ImpletationStrategyButton(flow_name: "getPointsAndDiscounts")
-            if let resultTracking = strategyTracking?.getPropertiesTrackings(deviceName: PXVendorSpecificAttributes().deviceName, connectionType: "", accessType: "", versionLib: MLBusinessAppDataService().getAppVersion(), accessLocation: nil, counter: 0, paymentMethod: model.paymentResult?.paymentData?.paymentMethod, offlinePaymentMethod: nil, businessResult: businessResult) {
-                 MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(resultTracking))
-            }
+        strategyTracking = ImpletationStrategyButton(flow_name: "getPointsAndDiscounts")
+        if let resultTracking = strategyTracking?.getPropertiesTrackings(deviceName: PXVendorSpecificAttributes().deviceName, connectionType: "", accessType: "", versionLib: MLBusinessAppDataService().getAppVersion(), accessLocation: nil, counter: 0, paymentMethod: model.paymentResult?.paymentData?.paymentMethod, offlinePaymentMethod: nil, businessResult: model.paymentResult) {
+                MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(resultTracking))
         }
+
         var paymentIds = [String]()
         var paymentMethodsIds = [String]()
         if let split = splitAccountMoney, let paymentMethod = split.paymentMethod?.id {

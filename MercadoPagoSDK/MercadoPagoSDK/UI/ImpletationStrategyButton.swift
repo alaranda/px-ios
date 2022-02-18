@@ -15,22 +15,34 @@ class ImpletationStrategyButton: StrategyTrackings {
         print("setando todoas as proprieades de um botão \(flow_name)")
     }
 
-    func getPropertiesTrackings(deviceName: String?, connectionType: String?, accessType: String?, versionLib: String?, accessLocation: String?, counter: Int?, paymentMethod: PXPaymentMethod?, offlinePaymentMethod: PXOfflinePaymentMethod?, businessResult: PXBusinessResult?) -> [String: Any] {
+    func getPropertiesTrackings(deviceName: String?, connectionType: String?, accessType: String?, versionLib: String?, accessLocation: String?, counter: Int?, paymentMethod: PXPaymentMethod?, offlinePaymentMethod: PXOfflinePaymentMethod?, businessResult: PaymentResult?) -> [String: Any] {
         var properties: [String: Any] = [:]
+
+        if let libCaller = MPXTracker.sharedInstance.getFlowName()?.isEmpty {
+            properties["extra_info"] = libCaller
+        }
         properties["current_step"] = self.flow_name
         properties["device_name"] = deviceName
+        properties["connection_type"] = connectionType
+        properties["access_type"] = accessType
         properties["version_lib"] = versionLib
         properties["access_location"] = accessLocation
         properties["counter_pressed_button"] = counter
 
         if let paymentMethod = paymentMethod {
             properties["payment_status"] = paymentMethod.status
-            properties["payment_method_id"] = paymentMethod.id
+            properties["payment_method_id"] = paymentMethod.name
         }
 
         if let offlinePaymentMethod = offlinePaymentMethod {
             properties["payment_status"] = offlinePaymentMethod.status
-            properties["payment_method_id"] = offlinePaymentMethod.id
+            properties["payment_method_id"] = offlinePaymentMethod.name
+        }
+
+        if let businessResult = businessResult {
+            properties["payment_status"] = businessResult.status
+            properties["payment_status_detail"] = businessResult.statusDetail
+            properties["payment_method_id"] = businessResult.paymentMethodId
         }
 
         return properties

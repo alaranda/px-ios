@@ -15,12 +15,30 @@ class ImpletationStrategyScreen: StrategyTrackings {
         print("setando todoas as proprieades de uma tela \(flow_name)")
     }
 
-func getPropertiesTrackings(deviceName: String?, connectionType: String?, accessType: String?, versionLib: String?, accessLocation: String?, counter: Int?, paymentMethod: PXPaymentMethod?, offlinePaymentMethod: PXOfflinePaymentMethod?, businessResult: PXBusinessResult?) -> [String: Any] {
+func getPropertiesTrackings(deviceName: String?, connectionType: String?, accessType: String?, versionLib: String?, accessLocation: String?, counter: Int?, paymentMethod: PXPaymentMethod?, offlinePaymentMethod: PXOfflinePaymentMethod?, businessResult: PaymentResult?) -> [String: Any] {
         var properties: [String: Any] = [:]
         properties["current_step"] = self.flow_name
-        properties["device_name"] = "10.4.5"
-        properties["version_lib"] = "4.5.4"
-        properties["access_location"] = "pt-Br"
+        properties["device_name"] = deviceName
+        properties["version_lib"] = versionLib
+        properties["access_location"] = accessLocation
+        properties["counter_pressed_button"] = counter
+
+        if let paymentMethod = paymentMethod {
+            properties["payment_status"] = paymentMethod.status
+            properties["payment_method_id"] = paymentMethod.id
+        }
+
+        if let offlinePaymentMethod = offlinePaymentMethod {
+            properties["payment_status"] = offlinePaymentMethod.status
+            properties["payment_method_id"] = offlinePaymentMethod.id
+        }
+
+        if let businessResult = businessResult {
+            properties["payment_status"] = businessResult.status
+            properties["payment_status_detail"] = businessResult.statusDetail
+            properties["payment_method_id"] = businessResult.paymentMethodId
+        }
+
         return properties
     }
 }
