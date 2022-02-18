@@ -76,12 +76,7 @@ extension PXOneTapViewModel {
             properties["bank_name"] = payerPaymentMethods.first(where: { $0.paymentMethodId == PXPaymentMethodId.DEBIN.rawValue })?.bankInfo?.name
             properties["external_account_id"] = amountHelper.getPaymentData().transactionInfo?.bankInfo?.accountId
             var extraInfo: [String: Any] = [:]
-            extraInfo["card_id"] = selectedCard.cardId
             extraInfo["has_esc"] = cardIdsEsc.contains(selectedCard.cardId ?? "")
-            extraInfo["selected_installment"] = amountHelper.getPaymentData().payerCost?.getPayerCostForTracking()
-            if let issuerId = amountHelper.getPaymentData().issuer?.id {
-                extraInfo["issuer_id"] = Int64(issuerId)
-            }
             extraInfo["has_split"] = splitPaymentEnabled
             properties["extra_info"] = extraInfo
         } else if paymentMethod.isCard {
