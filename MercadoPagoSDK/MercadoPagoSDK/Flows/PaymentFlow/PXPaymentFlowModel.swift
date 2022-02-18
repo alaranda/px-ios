@@ -189,13 +189,3 @@ extension PXPaymentFlowModel {
         return String(arc4random()) + String(Date().timeIntervalSince1970)
     }
 }
-
-extension PXPaymentFlowModel {
-    func trackingInfoGeneral(flow: String) -> [String: Any] {
-           var properties = [String: Any]()
-            properties["payment_status"] = businessResult?.paymentStatus
-            properties["payment_status_detail"] = businessResult?.paymentStatusDetail
-            properties["current_step"] = flow
-           return properties
-       }
-}

@@ -8,6 +8,7 @@ final class PXPaymentFlow: NSObject, PXFlow {
     var splitAccountMoney: PXPaymentData?
 
     var pxNavigationHandler: PXNavigationHandler
+    var strategyTracking: StrategyTrackings?
 
     init(paymentPlugin: PXSplitPaymentProcessor?, mercadoPagoServices: MercadoPagoServices, paymentErrorHandler: PXPaymentErrorHandlerProtocol, navigationHandler: PXNavigationHandler, amountHelper: PXAmountHelper, checkoutPreference: PXCheckoutPreference?, ESCBlacklistedStatus: [String]?) {
         model = PXPaymentFlowModel(paymentPlugin: paymentPlugin, mercadoPagoServices: mercadoPagoServices, ESCBlacklistedStatus: ESCBlacklistedStatus)
@@ -137,7 +138,13 @@ final class PXPaymentFlow: NSObject, PXFlow {
     }
 
     func finishFlow() {
-        MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(model.trackingInfoGeneral(flow: "finishFlow")))
+        if let businessResult = model.businessResult {
+            strategyTracking = ImpletationStrategyButton(flow_name: "finishFlow")
+            if let resultTracking = strategyTracking?.getPropertiesTrackings(deviceName: PXVendorSpecificAttributes().deviceName, connectionType: "", accessType: "", versionLib: MLBusinessAppDataService().getAppVersion(), accessLocation: nil, counter: 0, paymentMethod: nil, offlinePaymentMethod: nil, businessResult: businessResult) {
+                 MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(resultTracking))
+            }
+        }
+
         if let paymentResult = model.paymentResult {
             self.resultHandler?.finishPaymentFlow(paymentResult: paymentResult, instructionsInfo: model.instructionsInfo, pointsAndDiscounts: model.pointsAndDiscounts)
         } else if let businessResult = model.businessResult {
@@ -173,6 +180,12 @@ private extension PXPaymentFlow {
         var properties: [String: Any] = [:]
         properties["destination"] = notification.rawValue
         MPXTracker.sharedInstance.trackEvent(event: PostPaymentTrackingEvents.willNavigateToPostPayment(properties))
-        MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(model.trackingInfoGeneral(flow: "goToPostPayment")))
+
+        if let businessResult = model.businessResult {
+            strategyTracking = ImpletationStrategyButton(flow_name: "goToPostPayment")
+            if let resultTracking = strategyTracking?.getPropertiesTrackings(deviceName: PXVendorSpecificAttributes().deviceName, connectionType: "", accessType: "", versionLib: MLBusinessAppDataService().getAppVersion(), accessLocation: nil, counter: 0, paymentMethod: nil, offlinePaymentMethod: nil, businessResult: businessResult) {
+                 MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(resultTracking))
+            }
+        }
     }
 }

@@ -453,10 +453,8 @@ extension PXOfflineMethodsViewController: PXAnimatedButtonDelegate {
             amountOfButtonPress += 1
             trackEvent(event: PXOfflineMethodsTrackingEvents.didConfirm(viewModel.getEventTrackingProperties(selectedOfflineMethod)))
 
-            trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(viewModel.trackingInfoGeneral(selectedOfflineMethod, count: amountOfButtonPress)))
-
             strategyTracking = ImpletationStrategyButton(flow_name: "PXOfflineMethosViewController-doPayment")
-            if let resultTracking = strategyTracking?.getPropertiesTrackings(deviceName: "", connectionType: "", accessType: "", versionLib: "", accessLocation: "", counter: amountOfButtonPress, paymentMethod: nil, offlinePaymentMethod: selectedOfflineMethod) {
+            if let resultTracking = strategyTracking?.getPropertiesTrackings(deviceName: "", connectionType: "", accessType: "", versionLib: "", accessLocation: "", counter: amountOfButtonPress, paymentMethod: nil, offlinePaymentMethod: selectedOfflineMethod, businessResult: nil) {
                 trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(resultTracking))
             }
 

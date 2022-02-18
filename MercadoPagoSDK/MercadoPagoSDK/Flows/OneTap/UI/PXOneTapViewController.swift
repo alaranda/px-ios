@@ -115,7 +115,7 @@ final class PXOneTapViewController: MercadoPagoUIViewController {
         UIAccessibility.post(notification: .layoutChanged, argument: headerView?.getMerchantView()?.getMerchantTitleLabel())
         trackScreen(event: MercadoPagoUITrackingEvents.reviewOneTap(viewModel.getOneTapScreenProperties(oneTapApplication: viewModel.applications)))
         strategyTracking = ImpletationStrategyButton(flow_name: "PXOneTapViewController")
-        if let resultTracking = strategyTracking?.getPropertiesTrackings(deviceName: "", connectionType: "", accessType: "", versionLib: "", accessLocation: "", counter: amountOfButtonPress, paymentMethod: viewModel.amountHelper.getPaymentData().paymentMethod, offlinePaymentMethod: nil) {
+        if let resultTracking = strategyTracking?.getPropertiesTrackings(deviceName: "", connectionType: "", accessType: "", versionLib: "", accessLocation: "", counter: amountOfButtonPress, paymentMethod: viewModel.amountHelper.getPaymentData().paymentMethod, offlinePaymentMethod: nil, businessResult: nil) {
             trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(resultTracking))
         }
     }
@@ -529,7 +529,7 @@ extension PXOneTapViewController {
             let properties = viewModel.getConfirmEventProperties(selectedCard: selectedCardItem, selectedIndex: slider.getSelectedIndex())
             trackEvent(event: OneTapTrackingEvents.didConfirmPayment(properties))
             strategyTracking = ImpletationStrategyButton(flow_name: "PXOneTapViewController")
-            if let resultTracking = strategyTracking?.getPropertiesTrackings(deviceName: "", connectionType: "", accessType: "", versionLib: "", accessLocation: "", counter: amountOfButtonPress, paymentMethod: viewModel.amountHelper.getPaymentData().paymentMethod, offlinePaymentMethod: nil) {
+            if let resultTracking = strategyTracking?.getPropertiesTrackings(deviceName: "", connectionType: "", accessType: "", versionLib: "", accessLocation: "", counter: amountOfButtonPress, paymentMethod: viewModel.amountHelper.getPaymentData().paymentMethod, offlinePaymentMethod: nil, businessResult: nil) {
                 trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(resultTracking))
             }
         }

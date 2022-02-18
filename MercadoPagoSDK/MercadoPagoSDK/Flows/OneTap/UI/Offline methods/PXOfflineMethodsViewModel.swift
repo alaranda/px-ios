@@ -138,17 +138,4 @@ extension PXOfflineMethodsViewModel {
         properties["extra_info"] = info
         return properties
     }
-
-    func trackingInfoGeneral(_ selectedOfflineMethod: PXOfflinePaymentMethod, count: Int?) -> [String: Any] {
-        var properties = [String: Any]()
-        properties["current_step"] = "OfflineMethod"
-        properties["payment_method_id"] = selectedOfflineMethod.id
-        properties["payment_status"] = selectedOfflineMethod.status
-        var info: [String: Any] = [:]
-        info["has_payer_information"] = getPayerCompliance()?.offlineMethods.isCompliant
-        info["additional_information_needed"] = selectedOfflineMethod.hasAdditionalInfoNeeded
-        properties["extra_info"] = info
-        properties["counter_pressed_button"] = count
-        return properties
-    }
 }

@@ -133,15 +133,6 @@ extension PXBusinessResultViewModel: PXViewModelTrackingDataProtocol {
        return properties
     }
 
-    func trackingInfoGeneral(flow: String) -> [String: Any] {
-        var properties = [String: Any]()
-        properties["current_step"] = flow
-        properties["payment_status"] = businessResult.paymentStatus
-        properties["payment_status_detail"] = businessResult.paymentStatusDetail
-        MPXTracker.sharedInstance.trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(properties))
-        return properties
-    }
-
     func getTrackingRemediesProperties(isFromModal: Bool) -> [String: Any] {
         var properties: [String: Any] = [:]
         properties["index"] = 0
