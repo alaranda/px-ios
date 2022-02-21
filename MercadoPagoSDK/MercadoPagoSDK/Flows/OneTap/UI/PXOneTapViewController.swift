@@ -889,7 +889,12 @@ extension PXOneTapViewController: PXOneTapInstallmentInfoViewProtocol, PXOneTapI
             installmentsSelectorView.update(viewModel: viewModel)
         }
 
-        headerView?.updateModel(viewModel.getHeaderViewModel(selectedCard: selectedCard, pxOneTapContext: pxOneTapContext))
+        headerView?.updateModel(
+            viewModel.getHeaderViewModel(
+            selectedCard: selectedCard,
+            pxOneTapContext: pxOneTapContext
+            )
+        )
     }
 
     func hideInstallments() {
