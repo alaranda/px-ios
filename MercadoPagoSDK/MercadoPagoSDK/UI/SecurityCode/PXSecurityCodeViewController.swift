@@ -77,7 +77,7 @@ private extension PXSecurityCodeViewController {
         amountOfButtonPress += 1
         trackEvent(event: PXSecurityCodeTrackingEvents.didConfirmCode(viewModel.getScreenProperties()))
         strategyTracking = ImpletationStrategyButton(flow_name: "PXSecurityCodeViewController-confirmPayment")
-        if let resultTracking = strategyTracking?.getPropertiesTrackings(deviceName: "", connectionType: "", accessType: "", versionLib: "", accessLocation: "", counter: amountOfButtonPress, paymentMethod: viewModel.paymentMethod, offlinePaymentMethod: nil, businessResult: nil) {
+        if let resultTracking = strategyTracking?.getPropertiesTrackings(typeEvent: .button, deviceName: "", versionLib: "", counter: amountOfButtonPress, paymentMethod: viewModel.paymentMethod, offlinePaymentMethod: nil, businessResult: nil) {
             trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(resultTracking))
         }
         doPayment()

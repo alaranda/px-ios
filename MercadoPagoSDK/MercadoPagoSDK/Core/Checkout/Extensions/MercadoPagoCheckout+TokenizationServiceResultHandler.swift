@@ -12,6 +12,7 @@ extension MercadoPagoCheckout: TokenizationServiceResultHandler {
         } else {
             flowCompletion(token: token)
         }
+        trackCurrentStep("MercadoPagoCheckout - finishFlow \(shouldResetESC)")
     }
 
     func flowCompletion(token: PXToken) {
@@ -38,5 +39,14 @@ extension MercadoPagoCheckout: TokenizationServiceResultHandler {
 
     func getTokenizationService(needToShowLoading: Bool = true) -> TokenizationService {
         return TokenizationService(paymentOptionSelected: viewModel.paymentOptionSelected, cardToken: viewModel.cardToken, pxNavigationHandler: viewModel.pxNavigationHandler, needToShowLoading: needToShowLoading, mercadoPagoServices: viewModel.mercadoPagoServices, gatewayFlowResultHandler: self)
+    }
+}
+
+extension MercadoPagoCheckout {
+    func trackCurrentStep(_ flow: String) {
+        strategyTracking = ImpletationStrategyButton(flow_name: flow)
+        if let properties = strategyTracking?.getPropertiesTrackings(typeEvent: .screnn, deviceName: "", versionLib: "", counter: 0, paymentMethod: nil, offlinePaymentMethod: nil, businessResult: nil) {
+            MPXTracker.sharedInstance.trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(properties))
+        }
     }
 }

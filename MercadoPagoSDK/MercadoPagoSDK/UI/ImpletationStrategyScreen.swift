@@ -15,13 +15,12 @@ class ImpletationStrategyScreen: StrategyTrackings {
         print("setando todoas as proprieades de uma tela \(flow_name)")
     }
 
-func getPropertiesTrackings(deviceName: String?, connectionType: String?, accessType: String?, versionLib: String?, accessLocation: String?, counter: Int?, paymentMethod: PXPaymentMethod?, offlinePaymentMethod: PXOfflinePaymentMethod?, businessResult: PaymentResult?) -> [String: Any] {
+    func getPropertiesTrackings(typeEvent: typeEvent, deviceName: String?, versionLib: String?, counter: Int?, paymentMethod: PXPaymentMethod?, offlinePaymentMethod: PXOfflinePaymentMethod?, businessResult: PaymentResult?) -> [String: Any] {
         var properties: [String: Any] = [:]
         properties["current_step"] = self.flow_name
         properties["device_name"] = deviceName
         properties["version_lib"] = versionLib
-        properties["access_location"] = accessLocation
-        properties["counter_pressed_button"] = counter
+        properties["button_count_pressed"] = counter
 
         if let paymentMethod = paymentMethod {
             properties["payment_status"] = paymentMethod.status

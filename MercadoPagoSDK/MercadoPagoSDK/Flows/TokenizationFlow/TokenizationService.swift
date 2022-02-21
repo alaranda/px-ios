@@ -7,6 +7,7 @@ class TokenizationService {
     var needToShowLoading: Bool
     var mercadoPagoServices: MercadoPagoServices
     weak var resultHandler: TokenizationServiceResultHandler?
+    var strategyTracking: StrategyTrackings?
 
     init(paymentOptionSelected: PaymentMethodOption?, cardToken: PXCardToken?, pxNavigationHandler: PXNavigationHandler, needToShowLoading: Bool, mercadoPagoServices: MercadoPagoServices, gatewayFlowResultHandler: TokenizationServiceResultHandler) {
         self.paymentOptionSelected = paymentOptionSelected
@@ -42,25 +43,21 @@ class TokenizationService {
 
             if !String.isNullOrEmpty(esc) {
                 savedESCCardToken = PXSavedESCCardToken(cardId: cardInfo.getCardId(), esc: esc, requireESC: requireESC)
+                trackCurrentStep("TokenizationService - createCardToken \(esc)")
             } else {
                 savedESCCardToken = PXSavedESCCardToken(cardId: cardInfo.getCardId(), securityCode: securityCode, requireESC: requireESC)
+                trackCurrentStep("TokenizationService - createCardToken")
             }
             createSavedESCCardToken(savedESCCardToken: savedESCCardToken)
+
         // Saved card token
         } else {
             guard let securityCode = securityCode else {
                 return
             }
             createSavedCardToken(cardInformation: cardInfo, securityCode: securityCode)
+            trackCurrentStep("TokenizationService - createCardToken - requireESC \(requireESC)")
         }
-
-        trackCurrentStep("createCardToken - \(requireESC)")
-    }
-
-    func trackCurrentStep(_ flow: String) {
-        var properties = [String: Any]()
-        properties["current_step"] = flow
-        MPXTracker.sharedInstance.trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(properties))
     }
 
     func createCardTokenWithoutCVV() {
@@ -164,6 +161,15 @@ private extension TokenizationService {
             securityCodeVC.trackEvent(event: GeneralErrorTrackingEvents.error(
                 securityCodeVC.viewModel.getFrictionProperties(path: TrackingPaths.Events.SecurityCode.getTokenFrictionPath(), id: "token_api_error"))
             )
+        }
+    }
+}
+
+extension TokenizationService {
+    func trackCurrentStep(_ flow: String) {
+        strategyTracking = ImpletationStrategyButton(flow_name: flow)
+        if let properties = strategyTracking?.getPropertiesTrackings(typeEvent: .screnn, deviceName: "", versionLib: "", counter: 0, paymentMethod: nil, offlinePaymentMethod: nil, businessResult: nil) {
+            MPXTracker.sharedInstance.trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(properties))
         }
     }
 }

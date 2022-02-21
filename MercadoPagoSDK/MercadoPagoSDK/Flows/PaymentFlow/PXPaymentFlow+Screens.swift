@@ -18,6 +18,11 @@ extension PXPaymentFlow {
             }
             pxNavigationHandler.navigationController.pushViewController(paymentProcessorVC, animated: false)
         }
+
+        strategyTracking = ImpletationStrategyScreen(flow_name: "showPaymentProcessor")
+        if let resultTracking = strategyTracking?.getPropertiesTrackings(typeEvent: .screnn, deviceName: PXVendorSpecificAttributes().deviceName, versionLib: MLBusinessAppDataService().getAppVersion(), counter: 0, paymentMethod: nil, offlinePaymentMethod: nil, businessResult: nil) {
+                MPXTracker.sharedInstance.trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(resultTracking))
+        }
     }
 
     // MARK: - Post Payment Loader Screen

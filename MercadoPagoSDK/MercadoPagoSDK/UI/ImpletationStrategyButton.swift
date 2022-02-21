@@ -7,6 +7,11 @@
 
 import Foundation
 
+enum typeEvent: String {
+    case screnn
+    case button
+}
+
 class ImpletationStrategyButton: StrategyTrackings {
     var flow_name: String?
 
@@ -15,19 +20,14 @@ class ImpletationStrategyButton: StrategyTrackings {
         print("setando todoas as proprieades de um botão \(flow_name)")
     }
 
-    func getPropertiesTrackings(deviceName: String?, connectionType: String?, accessType: String?, versionLib: String?, accessLocation: String?, counter: Int?, paymentMethod: PXPaymentMethod?, offlinePaymentMethod: PXOfflinePaymentMethod?, businessResult: PaymentResult?) -> [String: Any] {
+    func getPropertiesTrackings(typeEvent: typeEvent = .screnn, deviceName: String?, versionLib: String?, counter: Int?, paymentMethod: PXPaymentMethod?, offlinePaymentMethod: PXOfflinePaymentMethod?, businessResult: PaymentResult?) -> [String: Any] {
         var properties: [String: Any] = [:]
 
-        if let libCaller = MPXTracker.sharedInstance.getFlowName()?.isEmpty {
-            properties["extra_info"] = libCaller
-        }
         properties["current_step"] = self.flow_name
         properties["device_name"] = deviceName
-        properties["connection_type"] = connectionType
-        properties["access_type"] = accessType
         properties["version_lib"] = versionLib
-        properties["access_location"] = accessLocation
-        properties["counter_pressed_button"] = counter
+        properties["button_count_pressed"] = counter
+        properties["type_event"] = typeEvent
 
         if let paymentMethod = paymentMethod {
             properties["payment_status"] = paymentMethod.status

@@ -114,8 +114,8 @@ final class PXOneTapViewController: MercadoPagoUIViewController {
         setupAutoDisplayOfflinePaymentMethods()
         UIAccessibility.post(notification: .layoutChanged, argument: headerView?.getMerchantView()?.getMerchantTitleLabel())
         trackScreen(event: MercadoPagoUITrackingEvents.reviewOneTap(viewModel.getOneTapScreenProperties(oneTapApplication: viewModel.applications)))
-        strategyTracking = ImpletationStrategyButton(flow_name: "PXOneTapViewController")
-        if let resultTracking = strategyTracking?.getPropertiesTrackings(deviceName: "", connectionType: "", accessType: "", versionLib: "", accessLocation: "", counter: amountOfButtonPress, paymentMethod: viewModel.amountHelper.getPaymentData().paymentMethod, offlinePaymentMethod: nil, businessResult: nil) {
+        strategyTracking = ImpletationStrategyScreen(flow_name: "PXOneTapViewController")
+        if let resultTracking = strategyTracking?.getPropertiesTrackings(typeEvent: .screnn, deviceName: "", versionLib: "", counter: amountOfButtonPress, paymentMethod: viewModel.amountHelper.getPaymentData().paymentMethod, offlinePaymentMethod: nil, businessResult: nil) {
             trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(resultTracking))
         }
     }
@@ -529,7 +529,7 @@ extension PXOneTapViewController {
             let properties = viewModel.getConfirmEventProperties(selectedCard: selectedCardItem, selectedIndex: slider.getSelectedIndex())
             trackEvent(event: OneTapTrackingEvents.didConfirmPayment(properties))
             strategyTracking = ImpletationStrategyButton(flow_name: "PXOneTapViewController")
-            if let resultTracking = strategyTracking?.getPropertiesTrackings(deviceName: "", connectionType: "", accessType: "", versionLib: "", accessLocation: "", counter: amountOfButtonPress, paymentMethod: viewModel.amountHelper.getPaymentData().paymentMethod, offlinePaymentMethod: nil, businessResult: nil) {
+            if let resultTracking = strategyTracking?.getPropertiesTrackings(typeEvent: .button, deviceName: "", versionLib: "", counter: amountOfButtonPress, paymentMethod: viewModel.amountHelper.getPaymentData().paymentMethod, offlinePaymentMethod: nil, businessResult: nil) {
                 trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(resultTracking))
             }
         }

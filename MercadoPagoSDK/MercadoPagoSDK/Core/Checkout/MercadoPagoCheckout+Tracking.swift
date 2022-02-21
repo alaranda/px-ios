@@ -28,11 +28,9 @@ extension MercadoPagoCheckout {
 
     func trackingInfoGeneral(flow: String) {
         strategyTracking = ImpletationStrategyButton(flow_name: "StartTrancking")
-        if let resultTracking = strategyTracking?.getPropertiesTrackings(deviceName: PXVendorSpecificAttributes().deviceName,
-                                                                         connectionType: "",
-                                                                         accessType: "",
+        if let resultTracking = strategyTracking?.getPropertiesTrackings(typeEvent: .button,
+                                                                         deviceName: PXVendorSpecificAttributes().deviceName,
                                                                          versionLib: MLBusinessAppDataService().getAppVersion(),
-                                                                         accessLocation: viewModel.mercadoPagoServices.getLanguage(),
                                                                          counter: 0,
                                                                          paymentMethod: nil,
                                                                          offlinePaymentMethod: nil,
