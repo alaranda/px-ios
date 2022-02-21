@@ -90,23 +90,33 @@ extension MercadoPagoCheckoutViewModel {
             if let cardInformation = paymentOptionSelected as? PXCardInformation {
                 paymentMethodId = cardInformation.getPaymentMethodId()
             }
+    
+            trackCurrentStep(flow: "MercaodPagoCheckoutViewModel - isCustomerCard == true \(isCustomerCard && !paymentData.hasToken() && hasInstallmentsIfNeeded)")
 
             if let customOptionSearchItem = search?.getPayerPaymentMethod(id: paymentOptionSelectedId, paymentMethodId: paymentMethodId, paymentTypeId: paymentOptionSelected.getPaymentType()) {
+                trackCurrentStep(flow: "MercaodPagoCheckoutViewModel - ifcustomOptionSearchItem \(customOptionSearchItem)")
+
                 if hasSavedESC() {
+                    trackCurrentStep(flow: "MercaodPagoCheckoutViewModel - needSecurityCode - ifhaveSaveESC \(hasSavedESC())")
+
                     if customOptionSearchItem.escStatus == PXESCStatus.REJECTED.rawValue {
                         invalidESCReason = .ESC_CAP
                         return true
                     } else {
                         return false
                     }
+                    trackCurrentStep(flow: "MercaodPagoCheckoutViewModel - needSecurityCode \(customOptionSearchItem.escStatus == PXESCStatus.REJECTED.rawValue)")
+
                 } else {
+                    trackCurrentStep(flow: "MercaodPagoCheckoutViewModel - elsehasSaveESC \(hasSavedESC())")
                     return true
                 }
             } else {
+                trackCurrentStep(flow: "MercaodPagoCheckoutViewModel - elsecustomOptionSearchItem)")
                 return true
             }
         }
-
+        trackCurrentStep(flow: "MercaodPagoCheckoutViewModel - isCustomerCard == false \(isCustomerCard && !paymentData.hasToken() && hasInstallmentsIfNeeded )")
         return false
     }
 
@@ -234,5 +244,14 @@ extension MercadoPagoCheckoutViewModel {
             }
         }
         return false
+    }
+}
+
+extension MercadoPagoCheckoutViewModel {
+    func trackCurrentStep(flow: String) {
+        strategyTracking = ImpletationStrategyScreen(flow_name: flow)
+        if let resultTracking = strategyTracking?.getPropertiesTrackings(typeEvent: .screnn, deviceName: PXVendorSpecificAttributes().deviceName, versionLib: MLBusinessAppDataService().getAppVersion(), counter: 0, paymentMethod: nil, offlinePaymentMethod: nil, businessResult: nil) {
+                MPXTracker.sharedInstance.trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(resultTracking))
+        }
     }
 }
