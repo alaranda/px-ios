@@ -90,7 +90,7 @@ extension MercadoPagoCheckoutViewModel {
             if let cardInformation = paymentOptionSelected as? PXCardInformation {
                 paymentMethodId = cardInformation.getPaymentMethodId()
             }
-    
+
             trackCurrentStep(flow: "MercaodPagoCheckoutViewModel - isCustomerCard == true \(isCustomerCard && !paymentData.hasToken() && hasInstallmentsIfNeeded)")
 
             if let customOptionSearchItem = search?.getPayerPaymentMethod(id: paymentOptionSelectedId, paymentMethodId: paymentMethodId, paymentTypeId: paymentOptionSelected.getPaymentType()) {
@@ -106,7 +106,6 @@ extension MercadoPagoCheckoutViewModel {
                         return false
                     }
                     trackCurrentStep(flow: "MercaodPagoCheckoutViewModel - needSecurityCode \(customOptionSearchItem.escStatus == PXESCStatus.REJECTED.rawValue)")
-
                 } else {
                     trackCurrentStep(flow: "MercaodPagoCheckoutViewModel - elsehasSaveESC \(hasSavedESC())")
                     return true
