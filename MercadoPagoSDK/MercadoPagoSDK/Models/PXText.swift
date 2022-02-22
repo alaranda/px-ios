@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 @objcMembers
 public class PXText: NSObject, Codable {
@@ -6,25 +7,28 @@ public class PXText: NSObject, Codable {
     let backgroundColor: String?
     let textColor: String?
     let weight: String?
+    let alignment: String?
     var defaultTextColor: UIColor = .black
     var defaultBackgroundColor: UIColor = .clear
-
+    
     enum CodingKeys: String, CodingKey {
         case message
         case backgroundColor = "background_color"
         case textColor = "text_color"
         case weight
+        case alignment
     }
 
-    public init(message: String?, backgroundColor: String?, textColor: String?, weight: String?) {
+    public init(message: String?, backgroundColor: String?, textColor: String?, weight: String?, alignment: String?) {
         self.message = message
         self.backgroundColor = backgroundColor
         self.textColor = textColor
         self.weight = weight
+        self.alignment = alignment
     }
 
     public static func == (lhs: PXText, rhs: PXText) -> Bool {
-        return lhs.message == rhs.message && lhs.backgroundColor == rhs.backgroundColor && lhs.textColor == rhs.textColor && lhs.weight == rhs.weight && lhs.defaultTextColor == rhs.defaultTextColor && lhs.defaultBackgroundColor == rhs.defaultBackgroundColor
+        return lhs.message == rhs.message && lhs.backgroundColor == rhs.backgroundColor && lhs.textColor == rhs.textColor && lhs.weight == rhs.weight && lhs.alignment == rhs.alignment && lhs.defaultTextColor == rhs.defaultTextColor && lhs.defaultBackgroundColor == rhs.defaultBackgroundColor
     }
 
     func getTextColor() -> UIColor {
@@ -74,6 +78,22 @@ public class PXText: NSObject, Codable {
             attributes[.font] = UIFont.ml_boldSystemFont(ofSize: fontSize)
         default:
             attributes[.font] = UIFont.ml_regularSystemFont(ofSize: fontSize)
+        }
+        
+        // Add alignment
+        let paragraphStyle = NSMutableParagraphStyle()
+        switch alignment {
+        case "left":
+            paragraphStyle.alignment = .left
+            attributes[.paragraphStyle] = paragraphStyle
+        case "center":
+            paragraphStyle.alignment = .center
+            attributes[.paragraphStyle] = paragraphStyle
+        case "right":
+            paragraphStyle.alignment = .right
+            attributes[.paragraphStyle] = paragraphStyle
+        default:
+            break
         }
 
         return NSAttributedString(string: message, attributes: attributes)
