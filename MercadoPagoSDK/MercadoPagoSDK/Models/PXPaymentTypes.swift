@@ -106,10 +106,6 @@ public enum PXPaymentTypes: String {
         return self == PXPaymentTypes.DEBIT_CARD || self == PXPaymentTypes.CREDIT_CARD || self == PXPaymentTypes.PREPAID_CARD
     }
 
-    func isBankTransfer() -> Bool {
-        return self == .BANK_TRANSFER
-    }
-
     func isDigitalCurrency() -> Bool {
         return self == PXPaymentTypes.DIGITAL_CURRENCY
     }

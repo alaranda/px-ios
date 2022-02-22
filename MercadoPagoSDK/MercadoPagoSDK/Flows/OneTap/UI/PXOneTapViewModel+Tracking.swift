@@ -69,7 +69,7 @@ extension PXOneTapViewModel {
         var properties: [String: Any] = [:]
         properties["payment_method_selected_index"] = selectedIndex
 
-        if paymentMethod.isBankTransfer {
+        if paymentMethod.id == PXPaymentMethodId.DEBIN.rawValue {
             properties["payment_method_type"] = paymentMethod.paymentTypeId
             properties["payment_method_id"] = paymentMethod.id
             properties["review_type"] = "one_tap"
