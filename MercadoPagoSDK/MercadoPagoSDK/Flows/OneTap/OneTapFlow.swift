@@ -41,34 +41,26 @@ final class OneTapFlow: NSObject, PXFlow {
             switch self.model.nextStep() {
             case .screenOneTap:
                 self.showOneTapViewController()
-                self.trackFlow("screenOneTap")
             case .screenSecurityCode:
                 self.showSecurityCodeScreen()
-                self.trackFlow("screenSecurityCode")
             case .serviceCreateOptionalToken:
                 self.getTokenizationService().createCardTokenWithoutCVV()
-                self.trackFlow("serviceCreateOptionalToken")
             case .serviceCreateESCCardToken:
                 self.getTokenizationService().createCardToken()
-                self.trackFlow("serviceCreateESCCardToken")
             case .serviceCreateWebPayCardToken:
                 self.getTokenizationService().createCardToken(securityCode: "")
-                self.trackFlow("serviceCreateWebPayCardToken")
             case .screenKyC:
                 self.showKyCScreen()
-                self.trackFlow("screenKyC")
             case .service3DS:
                 guard let program = self.model.getProgramValidation(), let cardHolderName = self.model.getCardHolderName() else { return }
                 self.getThreeDSService().authorize3DS(programUsed: program, cardHolderName: cardHolderName)
-                self.trackFlow("service3DS")
             case .payment:
                 self.startPaymentFlow()
-                self.trackFlow("payment")
             case .finish:
                 self.finishFlow()
-                self.trackFlow("finish")
             }
         }
+        trackFlow(model.nextStep().rawValue)
     }
 
     func refreshInitFlow(cardId: String) {

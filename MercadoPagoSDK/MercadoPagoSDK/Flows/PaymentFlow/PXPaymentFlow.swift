@@ -139,7 +139,7 @@ final class PXPaymentFlow: NSObject, PXFlow {
 
     func finishFlow() {
         strategyTracking = ImpletationStrategyScreen(flow_name: "finishFlow")
-        if let resultTracking = strategyTracking?.getPropertiesTrackings(typeEvent: .button, deviceName: PXVendorSpecificAttributes().deviceName, versionLib: MLBusinessAppDataService().getAppVersion(), counter: 0, paymentMethod: nil, offlinePaymentMethod: nil, businessResult: model.paymentResult) {
+        if let resultTracking = strategyTracking?.getPropertiesTrackings(typeEvent: .button, deviceName: PXVendorSpecificAttributes().deviceName ?? String(), versionLib: MLBusinessAppDataService().getAppVersion(), counter: 0, paymentMethod: nil, offlinePaymentMethod: nil, businessResult: model.paymentResult) {
                  MPXTracker.sharedInstance.trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(resultTracking))
         }
 
@@ -180,7 +180,7 @@ private extension PXPaymentFlow {
         MPXTracker.sharedInstance.trackEvent(event: PostPaymentTrackingEvents.willNavigateToPostPayment(properties))
 
         strategyTracking = ImpletationStrategyButton(flow_name: "goToPostPayment - destination \(notification.rawValue)")
-        if let resultTracking = strategyTracking?.getPropertiesTrackings(typeEvent: .button, deviceName: PXVendorSpecificAttributes().deviceName, versionLib: MLBusinessAppDataService().getAppVersion(), counter: 0, paymentMethod: nil, offlinePaymentMethod: nil, businessResult: model.paymentResult) {
+        if let resultTracking = strategyTracking?.getPropertiesTrackings(typeEvent: .button, deviceName: PXVendorSpecificAttributes().deviceName ?? String(), versionLib: MLBusinessAppDataService().getAppVersion(), counter: 0, paymentMethod: nil, offlinePaymentMethod: nil, businessResult: model.paymentResult) {
                 MPXTracker.sharedInstance.trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(resultTracking))
         }
     }

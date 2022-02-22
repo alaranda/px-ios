@@ -55,7 +55,7 @@ extension PXPaymentFlow: PaymentHandlerProtocol {
 extension PXPaymentFlow {
     func trackCurrentStep(flow: String) {
         strategyTracking = ImpletationStrategyScreen(flow_name: flow)
-        if let resultTracking = strategyTracking?.getPropertiesTrackings(typeEvent: .screnn, deviceName: PXVendorSpecificAttributes().deviceName, versionLib: MLBusinessAppDataService().getAppVersion(), counter: 0, paymentMethod: nil, offlinePaymentMethod: nil, businessResult: model.paymentResult) {
+        if let resultTracking = strategyTracking?.getPropertiesTrackings(typeEvent: .screnn, deviceName: PXVendorSpecificAttributes().deviceName ?? String(), versionLib: MLBusinessAppDataService().getAppVersion(), counter: 0, paymentMethod: nil, offlinePaymentMethod: nil, businessResult: model.paymentResult) {
                 MPXTracker.sharedInstance.trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Payments(resultTracking))
         }
     }

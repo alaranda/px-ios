@@ -8,7 +8,7 @@
 import Foundation
 
 protocol StrategyTrackings {
-    func getPropertiesTrackings(typeEvent: typeEvent, deviceName: String?, versionLib: String?, counter: Int?, paymentMethod: PXPaymentMethod?, offlinePaymentMethod: PXOfflinePaymentMethod?, businessResult: PaymentResult?) -> [String: Any]
+    func getPropertiesTrackings(typeEvent: typeEvent, deviceName: String, versionLib: String, counter: Int, paymentMethod: PXPaymentMethod?, offlinePaymentMethod: PXOfflinePaymentMethod?, businessResult: PaymentResult?) -> [String: Any]
 
     init(flow_name: String)
 }

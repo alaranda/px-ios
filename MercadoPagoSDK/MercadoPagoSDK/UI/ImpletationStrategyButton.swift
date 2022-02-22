@@ -20,7 +20,7 @@ class ImpletationStrategyButton: StrategyTrackings {
         print("setando todoas as proprieades de um botão \(flow_name)")
     }
 
-    func getPropertiesTrackings(typeEvent: typeEvent = .screnn, deviceName: String?, versionLib: String?, counter: Int?, paymentMethod: PXPaymentMethod?, offlinePaymentMethod: PXOfflinePaymentMethod?, businessResult: PaymentResult?) -> [String: Any] {
+    func getPropertiesTrackings(typeEvent: typeEvent = .screnn, deviceName: String = "iphone", versionLib: String = "0", counter: Int = 0, paymentMethod: PXPaymentMethod?, offlinePaymentMethod: PXOfflinePaymentMethod?, businessResult: PaymentResult?) -> [String: Any] {
         var properties: [String: Any] = [:]
 
         properties["current_step"] = self.flow_name
