@@ -12,7 +12,11 @@ class PXBusinessResultViewModel: NSObject {
     // Default Image
     private lazy var approvedIconName = "default_item_icon"
 
-    init(businessResult: PXBusinessResult, paymentData: PXPaymentData, amountHelper: PXAmountHelper, pointsAndDiscounts: PXPointsAndDiscounts?, debinBankName: String? = nil) {
+    init(businessResult: PXBusinessResult,
+         paymentData: PXPaymentData,
+         amountHelper: PXAmountHelper,
+         pointsAndDiscounts: PXPointsAndDiscounts?,
+         debinBankName: String? = nil) {
         self.businessResult = businessResult
         self.paymentData = paymentData
         self.amountHelper = amountHelper

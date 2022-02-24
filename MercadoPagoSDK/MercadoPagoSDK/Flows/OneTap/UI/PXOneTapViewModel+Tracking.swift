@@ -68,22 +68,21 @@ extension PXOneTapViewModel {
 
         var properties: [String: Any] = [:]
         properties["payment_method_selected_index"] = selectedIndex
+        properties["payment_method_type"] = paymentMethod.paymentTypeId
+        properties["payment_method_id"] = paymentMethod.id
+        properties["review_type"] = "one_tap"
+        var extraInfo: [String: Any] = [:]
 
         if paymentMethod.id == PXPaymentMethodId.DEBIN.rawValue {
-            properties["payment_method_type"] = paymentMethod.paymentTypeId
-            properties["payment_method_id"] = paymentMethod.id
-            properties["review_type"] = "one_tap"
-            properties["bank_name"] = payerPaymentMethods.first(where: { $0.paymentMethodId == PXPaymentMethodId.DEBIN.rawValue })?.bankInfo?.name
-            properties["external_account_id"] = amountHelper.getPaymentData().transactionInfo?.bankInfo?.accountId
-            var extraInfo: [String: Any] = [:]
+            let externalAccountId = amountHelper.getPaymentData().transactionInfo?.bankInfo?.accountId
+            properties["bank_name"] = payerPaymentMethods.first(where: {
+                $0.paymentMethodId == PXPaymentMethodId.DEBIN.rawValue && $0.id == externalAccountId
+            })?.bankInfo?.name
+            properties["external_account_id"] = externalAccountId
             extraInfo["has_esc"] = cardIdsEsc.contains(selectedCard.cardId ?? "")
             extraInfo["has_split"] = splitPaymentEnabled
             properties["extra_info"] = extraInfo
         } else if paymentMethod.isCard {
-            properties["payment_method_type"] = paymentMethod.paymentTypeId
-            properties["payment_method_id"] = paymentMethod.id
-            properties["review_type"] = "one_tap"
-            var extraInfo: [String: Any] = [:]
             extraInfo["card_id"] = selectedCard.cardId
             extraInfo["has_esc"] = cardIdsEsc.contains(selectedCard.cardId ?? "")
             extraInfo["selected_installment"] = amountHelper.getPaymentData().payerCost?.getPayerCostForTracking()
@@ -93,10 +92,6 @@ extension PXOneTapViewModel {
             extraInfo["has_split"] = splitPaymentEnabled
             properties["extra_info"] = extraInfo
         } else {
-            properties["payment_method_type"] = paymentMethod.id
-            properties["payment_method_id"] = paymentMethod.id
-            properties["review_type"] = "one_tap"
-            var extraInfo: [String: Any] = [:]
             extraInfo["balance"] = selectedCard.accountMoneyBalance
             extraInfo["selected_installment"] = amountHelper.getPaymentData().payerCost?.getPayerCostForTracking(isDigitalCurrency: paymentMethod.isDigitalCurrency)
             properties["extra_info"] = extraInfo

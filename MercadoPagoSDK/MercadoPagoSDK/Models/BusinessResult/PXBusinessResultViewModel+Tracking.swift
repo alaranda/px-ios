@@ -87,7 +87,9 @@ extension PXBusinessResultViewModel: PXCongratsTrackingDataProtocol {
 
 extension PXBusinessResultViewModel: PXViewModelTrackingDataProtocol {
     func getDebinProperties() -> [String: Any]? {
-        guard let paymentTypeId = amountHelper.getPaymentData().paymentMethod?.paymentTypeId, let paymentTypeIdEnum = PXPaymentTypes(rawValue: paymentTypeId), paymentTypeIdEnum == .BANK_TRANSFER else {
+        guard let paymentTypeId = amountHelper.getPaymentData().paymentMethod?.paymentTypeId,
+                let paymentTypeIdEnum = PXPaymentTypes(rawValue: paymentTypeId),
+                paymentTypeIdEnum == .BANK_TRANSFER else {
             return nil
         }
 

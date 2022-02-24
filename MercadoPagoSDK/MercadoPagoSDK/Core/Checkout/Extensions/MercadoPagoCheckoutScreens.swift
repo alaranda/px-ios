@@ -125,7 +125,11 @@ extension MercadoPagoCheckout {
             debinBankName = viewModel.search?.getPayerPaymentMethod(id: id, paymentMethodId: paymentMethodId, paymentTypeId: paymentTypeId)?.bankInfo?.name
         }
 
-        self.businessResultVM = PXBusinessResultViewModel(businessResult: businessResult, paymentData: viewModel.paymentData, amountHelper: viewModel.amountHelper, pointsAndDiscounts: viewModel.pointsAndDiscounts, debinBankName: debinBankName)
+        self.businessResultVM = PXBusinessResultViewModel(businessResult: businessResult,
+                                                          paymentData: viewModel.paymentData,
+                                                          amountHelper: viewModel.amountHelper,
+                                                          pointsAndDiscounts: viewModel.pointsAndDiscounts,
+                                                          debinBankName: debinBankName)
 
         guard let pxBusinessResultViewModel = self.businessResultVM else { return }
 

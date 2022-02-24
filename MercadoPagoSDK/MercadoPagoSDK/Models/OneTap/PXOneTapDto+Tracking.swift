@@ -14,7 +14,9 @@ extension PXOneTapDto {
         properties["has_interest_free"] = benefits?.interestFree != nil ? true : false
         properties["has_reimbursement"] = benefits?.reimbursement != nil ? true : false
         if paymentMethodId == PXPaymentMethodId.DEBIN.rawValue {
-            properties["bank_name"] = payerPaymentMethods?.first(where: { $0.paymentMethodId == PXPaymentMethodId.DEBIN.rawValue })?.bankInfo?.name
+            properties["bank_name"] = payerPaymentMethods?.first(where: {
+                $0.paymentMethodId == PXPaymentMethodId.DEBIN.rawValue && $0.id == bankTransfer?.id
+            })?.bankInfo?.name
             properties["external_account_id"] = bankTransfer?.id
         }
 
