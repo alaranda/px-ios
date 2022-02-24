@@ -23,6 +23,7 @@ class ImpletationStrategyButton: StrategyTrackings {
     func getPropertiesTrackings(typeEvent: typeEvent = .screnn, deviceName: String = "iphone", versionLib: String = "0", counter: Int = 0, paymentMethod: PXPaymentMethod?, offlinePaymentMethod: PXOfflinePaymentMethod?, businessResult: PaymentResult?) -> [String: Any] {
         var properties: [String: Any] = [:]
 
+        properties["flow"] = MPXTracker.sharedInstance.getFlowName() ?? "PX"
         properties["current_step"] = self.flow_name
         properties["device_name"] = deviceName
         properties["version_lib"] = versionLib
