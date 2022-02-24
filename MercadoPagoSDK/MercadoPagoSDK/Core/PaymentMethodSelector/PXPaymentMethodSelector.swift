@@ -1,7 +1,6 @@
 import Foundation
 
 public class PXPaymentMethodSelector: NSObject {
-    
     var viewModel: PXPaymentMethodSelectorViewModel?
 
     var accessToken: String?
@@ -53,7 +52,7 @@ public class PXPaymentMethodSelector: NSObject {
             return PXPaymentMethodSelector(accessToken: accessToken)
         }
     }
-    
+
     // TODO: Remove this after mock
     public func setSelectedPaymentMethod(_ paymentMethodId: String) {
         viewModel?.selectedPaymentMethodId = paymentMethodId
@@ -70,7 +69,7 @@ public protocol PXPaymentMehtodSelectorDelegate: AnyObject {
     /**
      User cancel checkout. By any cancel UI button or back navigation action. You can return an optional block, to override the default exit cancel behavior. Default exit cancel behavior is back navigation stack.
      */
-    func cancelCheckout() -> (() -> Void)?
+    func didCanceledPaymentMethodSelection() -> (() -> Void)?
 }
 
 extension PXPaymentMethodSelector {
@@ -96,6 +95,10 @@ extension PXPaymentMethodSelector {
         viewModel?.pxNavigationHandler.presentInitLoading()
 
 //        executeNextStep()
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+            self.closeCheckout()
+        }
     }
 
 //    func startOneTapFlow() {
@@ -122,8 +125,8 @@ extension PXPaymentMethodSelector {
 //
 //        InitFlowRefresh.resetValues()
 //    }
-    
-    @objc func closeCheckout() {
+
+    func closeCheckout() {
         commonFinish()
         // delegate.finishCheckout - defined
         // Exit checkout with payment. (by closeAction)
@@ -138,13 +141,15 @@ extension PXPaymentMethodSelector {
 //        }
         if let _ = viewModel?.getSelectedPaymentMethod() {
             if let didSelectedPaymentMethod = viewModel?.delegate?.didSelectedPaymentMethod() {
-                didSelectedPaymentMethod(PXCheckoutStore())
+                return didSelectedPaymentMethod(PXCheckoutStore())
+            } else {
+                return defaultExitAction()
             }
         }
 
         // delegate.cancelCheckout - defined
         // Exit checkout without payment. (by back stack action)
-        if let delegate = viewModel?.delegate, let cancelCustomAction = delegate.cancelCheckout() {
+        if let delegate = viewModel?.delegate, let cancelCustomAction = delegate.didCanceledPaymentMethodSelection() {
             cancelCustomAction()
             return
         }
@@ -152,15 +157,18 @@ extension PXPaymentMethodSelector {
         // Default exit. Without LifecycleProtocol returns.
         defaultExitAction()
     }
-    
+
     private func commonFinish() {
+        // TODO: Remove after mock
+        viewModel?.pxNavigationHandler.dismissLoading()
+
         MPXTracker.sharedInstance.clean()
         PXCheckoutStore.sharedInstance.clean()
         PXNotificationManager.UnsuscribeTo.attemptToClose(self)
         ThemeManager.shared.applyAppNavBarStyle(navigationController: viewModel?.pxNavigationHandler.navigationController)
         viewModel?.clean()
     }
-    
+
     private func defaultExitAction() {
         viewModel?.pxNavigationHandler.goToRootViewController()
     }
@@ -170,7 +178,7 @@ extension PXPaymentMethodSelector: PXPaymentErrorHandlerProtocol {
     func escError(reason: PXESCDeleteReason) {
         // TODO: Implement this
     }
-    
+
     func exitCheckout() {
         // TODO: Implement this
     }

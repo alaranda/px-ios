@@ -2,29 +2,29 @@ import Foundation
 
 class PXPaymentMethodSelectorViewModel {
     weak var delegate: PXPaymentMehtodSelectorDelegate?
-    
-    var selectedPaymentMethodId: String? = nil
+
+    var selectedPaymentMethodId: String?
 
     var pxNavigationHandler: PXNavigationHandler = PXNavigationHandler.getDefault()
-    
+
     var search: PXInitDTO?
-    
+
     // OneTap Flow
     var onetapFlow: OneTapFlow?
 
     func setNavigationHandler(handler: PXNavigationHandler) {
         pxNavigationHandler = handler
     }
-    
+
     func clean() {
         // TODO: Clean missing flows
         onetapFlow = nil
     }
-    
+
     func getSelectedPaymentMethod() -> String? {
         return selectedPaymentMethodId
     }
-    
+
 //    func createPaymentFlow(paymentErrorHandler: PXPaymentErrorHandlerProtocol) -> PXPaymentFlow {
 //        guard let paymentFlow = paymentFlow else {
 //            return buildPaymentFlow(with: paymentErrorHandler)
