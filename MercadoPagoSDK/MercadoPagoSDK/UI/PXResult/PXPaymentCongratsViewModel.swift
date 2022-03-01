@@ -122,7 +122,10 @@ extension PXPaymentCongratsViewModel: PXNewResultViewModelInterface {
     func getDiscounts() -> PXDiscounts? {
         return paymentCongrats.discounts
     }
-
+    /// ADS BANNER
+    func getAdsBanner() -> PXAdsBanner? {
+        return paymentCongrats.adsBanner
+    }
     func getDiscountsTapAction() -> ((Int, String?, String?) -> Void)? {
         let action: (Int, String?, String?) -> Void = { index, deepLink, trackId in
             // open deep link
