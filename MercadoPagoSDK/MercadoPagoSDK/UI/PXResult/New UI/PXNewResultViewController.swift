@@ -372,7 +372,10 @@ extension PXNewResultViewController {
         if let viewReceiptActionView = buildViewReceiptActionView() {
             views.append(ResultViewData(view: viewReceiptActionView, verticalMargin: PXLayout.M_MARGIN, horizontalMargin: PXLayout.L_MARGIN))
         }
-
+        // Ads Banner View
+        if let adsBannerView = buildAdsBannerViews() {
+            views.append(ResultViewData(view: adsBannerView, verticalMargin: PXLayout.M_MARGIN, horizontalMargin: PXLayout.L_MARGIN))
+        }
         // Bottom Custom View
         if let view = viewModel.getBottomCustomView() {
             views.append(ResultViewData(view: view, verticalMargin: isActionCardViewLastView(views) ? PXLayout.M_MARGIN : 0))
@@ -579,6 +582,24 @@ extension PXNewResultViewController {
             itemsViews.append(itemView)
         }
         return itemsViews
+    }
+
+    //// ADS BANNER
+    func buildAdsBannerViews() -> UIView? {
+        guard let data = PXNewResultUtil.getDataForAdsBannerView(adsBannerData: viewModel.getAdsBanner()) else {
+            return nil
+        }
+        let bannerView = MLBusinessAdsBannerView(data)
+
+        /*for itemData in data {
+            let itemView = MLBusinessAdsBannerView(itemData)
+            if let tapAction = viewModel.getCrossSellingTapAction() {
+                itemView.addTapAction(action: tapAction)
+            }
+
+            itemsViews.append(itemView)
+        }*/
+        return bannerView
     }
 
     //// VIEW RECEIPT ACTION
