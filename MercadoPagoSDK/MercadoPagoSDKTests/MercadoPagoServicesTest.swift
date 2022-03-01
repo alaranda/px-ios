@@ -11,6 +11,7 @@ final class CustomServiceMock: CustomService {
         calledGetPointsAndDiscounts = true
         successResponse ? response(.success(PXPointsAndDiscounts(points: nil,
                                                                  discounts: nil,
+                                                                 adsBanner: nil,
                                                                  crossSelling: nil,
                                                                  viewReceiptAction: nil,
                                                                  topTextBox: nil,
