@@ -26,6 +26,9 @@ public final class PXPaymentCongrats: NSObject {
     // Discounts
     private(set) var discounts: PXDiscounts?
 
+    // Ads Banner
+    private(set) var adsBanner: PXAdsBanner?
+
     // Expense split
     private(set) var expenseSplit: PXExpenseSplit?
 
@@ -310,7 +313,16 @@ extension PXPaymentCongrats {
         self.crossSelling = items
         return self
     }
-
+    /**
+     Defines the cross selling data in the cross selling seccions of the congrats.
+     - parameter crossSellingItems: an array of PXCrossSellingItem
+     - returns: this builder `PXPaymentCongrats`
+    */
+    @discardableResult
+    public func withAdsBanner(_ banner: PXAdsBanner?) -> PXPaymentCongrats {
+        self.adsBanner = banner
+        return self
+    }
     /**
      Defines how will be the sort of the component in the Congrats
      - parameter customSorting: a boolean
