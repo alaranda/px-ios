@@ -481,6 +481,7 @@ extension PXResultViewModel {
             .withAutoReturn(pointsAndDiscounts?.autoReturn)
             .withPrimaryButton(pointsAndDiscounts?.primaryButton)
             .withCrossSelling(pointsAndDiscounts?.crossSelling)
+            .withAdsBanner(pointsAndDiscounts?.adsBanner)
             .withCustomSorting(pointsAndDiscounts?.customOrder)
             .withInstructions(instructionsInfo)
             .withFooterMainAction(getActionButton())
