@@ -101,6 +101,14 @@ class PXNewResultUtil {
         return data
     }
 
+    class func getDataForAdsBannerView(adsBannerData: PXAdsBanner?) -> MLBusinessAdsBannerData? {
+        guard let adsBannerData = adsBannerData else {
+            return nil
+        }
+        let data = PXAdsBannerData(banner: adsBannerData)
+        return data
+    }
+
     // URL logic
     enum PXAutoReturnTypes: String {
         case APPROVED = "approved"
