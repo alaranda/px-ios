@@ -22,9 +22,9 @@ public class PXAdsBanner: NSObject, Codable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case content
-        case eventData
-        case cId
-        case cCategory
+        case content = "content"
+        case eventData = "event_data"
+        case cId = "c_id"
+        case cCategory = "c_category"
     }
 }

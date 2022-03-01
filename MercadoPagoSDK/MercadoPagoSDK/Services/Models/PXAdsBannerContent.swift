@@ -26,11 +26,11 @@ public class PXAdsBannerContent: NSObject, Codable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case contentId
-        case markUp
-        case imgUrl
-        case deepLink
-        case destinationUrl
-        case printUrl
+        case contentId = "content_id"
+        case markUp = "markup"
+        case imgUrl = "image_url"
+        case deepLink = "deeplink"
+        case destinationUrl = "destination_url"
+        case printUrl = "print_url"
     }
 }

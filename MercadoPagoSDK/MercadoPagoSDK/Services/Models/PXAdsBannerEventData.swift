@@ -30,13 +30,13 @@ public class PXAdsBannerEventData: NSObject, Codable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case audience
-        case componentId
-        case contentSource
-        case printId
-        case logic
-        case position
-        case flow
-        case campaignId
+        case audience = "audience"
+        case componentId = "component_id"
+        case contentSource = "content_source"
+        case printId = "print_id"
+        case logic = "logic"
+        case position = "position"
+        case flow = "flow"
+        case campaignId = "campaign_id"
     }
 }
