@@ -30,6 +30,9 @@ protocol PXNewResultViewModelInterface: PXViewModelTrackingDataProtocol {
     // POINTS AND DISCOUNTS
     /// POINTS
     func getPoints() -> PXPoints?
+
+    func getAdsBanner() -> PXAdsBanner?
+
     func getPointsTapAction() -> ((_ deepLink: String) -> Void)?
 
     /// DISCOUNTS
