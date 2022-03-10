@@ -893,6 +893,8 @@ extension PXNewResultViewController: MLBusinessAdsBannerViewDelegate {
             task.resume()
         }
 
+        PXDeepLinkManager.open(deepLink)
+
         print("clicked: " + clickUrl)
         print("deepLinked: " + deepLink)
     }
