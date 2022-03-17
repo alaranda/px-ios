@@ -8,7 +8,7 @@ extension CustomRequestInfos: RequestInfos {
     var endpoint: String {
         switch self {
         case .resetESCCap(let cardId, _): return "px_mobile/v1/esc_cap/\(cardId)"
-        case .getCongrats: return "v1/px_mobile/congrats"
+        case .getCongrats: return "beta/px_mobile/congrats"
         case .createPayment: return "v1/px_mobile/payments"
         }
     }
