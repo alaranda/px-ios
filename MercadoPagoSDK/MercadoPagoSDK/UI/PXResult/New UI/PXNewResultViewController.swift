@@ -82,6 +82,15 @@ class PXNewResultViewController: MercadoPagoUIViewController {
         }
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        if viewModel.getStatusPayment() == PXPayment.Status.APPROVED || viewModel.getStatusPayment() == PXPayment.Status.REJECTED {
+            var isPaymentToggle = IsPaymentToggle.paying
+            isPaymentToggle.toggle()
+        }
+    }
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }

@@ -20,12 +20,18 @@ class PXPaymentCongratsViewModel {
                         thirdString: NSAttributedString?,
                         fourthString: NSAttributedString?)
 
+        var bottomText: NSAttributedString?
         var iconURL: String?
 
         if let displayInfo = paymentInfo.displayInfo {
             subtitles = getSubtitles(from: displayInfo.result?.paymentMethod?.detail)
 
             iconURL = displayInfo.result?.paymentMethod?.iconUrl
+        }
+
+        if let extraInfo = paymentInfo.displayInfo?.result?.extraInfo,
+           let detail = extraInfo.detail {
+            bottomText = getBottomText(detail)
         } else {
             subtitles.secondString = PXNewResultUtil.formatPaymentMethodSecondString(paymentMethodName: paymentInfo.paymentMethodName,
                                                                            paymentMethodLastFourDigits: paymentInfo.paymentMethodLastFourDigits,
@@ -40,6 +46,7 @@ class PXPaymentCongratsViewModel {
                                    secondString: subtitles.secondString,
                                    thirdString: subtitles.thirdString,
                                    fourthString: subtitles.fourthString,
+                                   bottomString: bottomText,
                                    icon: defaultIcon,
                                    iconURL: iconURL,
                                    action: nil,
@@ -59,9 +66,29 @@ class PXPaymentCongratsViewModel {
                 thirdString: secondaryTexts[1],
                 fourthString: secondaryTexts[2])
     }
+
+    private func getBottomText(_ texts: [PXText]? ) -> NSMutableAttributedString? {
+        var combinedText = NSMutableAttributedString()
+
+        if let texts = texts {
+            for eachText in texts {
+                if let text = eachText.getAttributedString(fontSize: PXLayout.XXS_FONT) {
+                    combinedText.append(text)
+                    if text != texts.last {
+                        combinedText.append(NSAttributedString(string: "\n\n"))
+                    }
+                }
+            }
+        }
+        return combinedText
+    }
 }
 
 extension PXPaymentCongratsViewModel: PXNewResultViewModelInterface {
+    func getStatusPayment() -> String {
+        return paymentCongrats.type.getRawValue()
+    }
+
     func getAndesMessage() -> InfoOperation? {
         return paymentCongrats.infoOperation
     }
@@ -309,18 +336,28 @@ extension PXPaymentCongratsViewModel: PXNewResultViewModelInterface {
         }
     }
 
+    func getDebinProperties() -> [String: Any]? {
+        return paymentCongrats.bankTransferProperties
+    }
+
     func getTrackingPath() -> PXResultTrackingEvents? {
         if let internalTrackingPath = paymentCongrats.internalTrackingPath as? PXResultTrackingEvents {
             return internalTrackingPath
         } else {
             var screenPath: PXResultTrackingEvents?
             let paymentStatus = paymentCongrats.type.getRawValue()
-            if paymentStatus == PXPaymentStatus.APPROVED.rawValue || paymentStatus == PXPaymentStatus.PENDING.rawValue {
-                screenPath = .congratsPaymentApproved(getTrackingProperties())
-            } else if paymentStatus == PXPaymentStatus.IN_PROCESS.rawValue {
-                screenPath = .congratsPaymentInProcess(getTrackingProperties())
+            var properties = getTrackingProperties()
+
+            if let debinProperties = getDebinProperties() {
+                properties.merge(debinProperties) { current, _ in current }
+            }
+
+            if paymentStatus == PXPaymentStatus.APPROVED.rawValue {
+                screenPath = .congratsPaymentApproved(properties)
+            } else if paymentStatus == PXPaymentStatus.IN_PROCESS.rawValue || paymentStatus == PXPaymentStatus.PENDING.rawValue {
+                screenPath = .congratsPaymentInProcess(properties)
             } else if paymentStatus == PXPaymentStatus.REJECTED.rawValue {
-                screenPath = .congratsPaymentRejected(getTrackingProperties())
+                screenPath = .congratsPaymentRejected(properties)
             }
 
             return screenPath

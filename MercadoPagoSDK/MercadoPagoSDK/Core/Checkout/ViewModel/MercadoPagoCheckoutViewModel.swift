@@ -100,6 +100,8 @@ class MercadoPagoCheckoutViewModel: NSObject, NSCopying {
 
     lazy var pxNavigationHandler: PXNavigationHandler = PXNavigationHandler.getDefault()
 
+    var strategyTracking: StrategyTrackings = ImpletationStrategy()
+
     init(checkoutPreference: PXCheckoutPreference, publicKey: String, privateKey: String?, advancedConfig: PXAdvancedConfiguration? = nil, trackingConfig: PXTrackingConfiguration? = nil, checkoutType: String?) {
         self.publicKey = publicKey
         self.privateKey = privateKey
@@ -244,7 +246,20 @@ class MercadoPagoCheckoutViewModel: NSObject, NSCopying {
             updatePaymentData(suggestedPaymentMethod)
         }
 
-        return PXResultViewModel(amountHelper: amountHelper, paymentResult: paymentResult, instructionsInfo: instructionsInfo, pointsAndDiscounts: pointsAndDiscounts, resultConfiguration: advancedConfig.paymentResultConfiguration, remedy: remedy, oneTapDto: oneTapDto)
+        var debinBankName: String?
+
+        if paymentResult.paymentData?.paymentMethod?.id == PXPaymentMethodId.DEBIN.rawValue {
+            debinBankName = getDebinBankName()
+        }
+
+        return PXResultViewModel(amountHelper: amountHelper,
+                                 paymentResult: paymentResult,
+                                 instructionsInfo: instructionsInfo,
+                                 pointsAndDiscounts: pointsAndDiscounts,
+                                 resultConfiguration: advancedConfig.paymentResultConfiguration,
+                                 remedy: remedy,
+                                 oneTapDto: oneTapDto,
+                                 debinBankName: debinBankName)
     }
 
     // SEARCH_PAYMENT_METHODS
@@ -255,6 +270,17 @@ class MercadoPagoCheckoutViewModel: NSObject, NSCopying {
         self.cardToken = cardToken
         // Sets if esc is enabled to card token
         self.cardToken?.setRequireESC(escEnabled: getAdvancedConfiguration().isESCEnabled())
+    }
+
+    public func getDebinBankName() -> String? {
+        var debinBankName: String?
+
+        let id = paymentData.transactionInfo?.bankInfo?.accountId
+        let paymentMethodId = paymentResult?.paymentData?.paymentMethod?.id
+        let paymentTypeId = paymentResult?.paymentData?.paymentMethod?.paymentTypeId
+        debinBankName = search?.getPayerPaymentMethod(id: id, paymentMethodId: paymentMethodId, paymentTypeId: paymentTypeId)?.bankInfo?.name
+
+        return debinBankName
     }
 
     // CREDIT_DEBIT

@@ -47,8 +47,12 @@ final class PXOneTapViewController: MercadoPagoUIViewController {
     private var navigationBarTapGesture: UITapGestureRecognizer?
     var installmentRow = PXOneTapInstallmentInfoView()
     private var andesBottomSheet: AndesBottomSheetViewController?
+    var amountOfButtonPress: Int = 0
 
     var cardType: MLCardDrawerTypeV3
+
+    var strategyTracking: StrategyTrackings = ImpletationStrategy()
+    var isPaymentToggle = IsPaymentToggle.noPaying
 
     // MARK: Lifecycle/Publics
     init(viewModel: PXOneTapViewModel, pxOneTapContext: PXOneTapContext, timeOutPayButton: TimeInterval = 15, callbackPaymentData : @escaping ((PXPaymentData) -> Void), callbackConfirm: @escaping ((PXPaymentData, Bool) -> Void), callbackUpdatePaymentOption: @escaping ((PaymentMethodOption) -> Void), callbackRefreshInit: @escaping ((String) -> Void), callbackExit: @escaping (() -> Void), finishButtonAnimation: @escaping (() -> Void)) {
@@ -111,6 +115,8 @@ final class PXOneTapViewController: MercadoPagoUIViewController {
         setupAutoDisplayOfflinePaymentMethods()
         UIAccessibility.post(notification: .layoutChanged, argument: headerView?.getMerchantView()?.getMerchantTitleLabel())
         trackScreen(event: MercadoPagoUITrackingEvents.reviewOneTap(viewModel.getOneTapScreenProperties(oneTapApplication: viewModel.applications)))
+
+        strategyTracking.getPropertieFlow(flow: "PXOneTapViewController")
     }
 
     deinit {
@@ -444,8 +450,15 @@ extension PXOneTapViewController {
     }
 
     func trackDialogEvent(trackingPath: String?, properties: [String: Any]?) {
-        if shouldTrackModal, let trackingPath = trackingPath, let properties = properties {
+        if shouldTrackModal, let trackingPath = trackingPath, var properties = properties {
             shouldTrackModal = false
+
+            // Remove unnecessary tracks for path: /px_checkout/dialog/dismiss
+            if trackingPath == TrackingPaths.Events.OneTap.getDialogDismissPath() {
+                properties.removeValue(forKey: "type")
+                properties.removeValue(forKey: "deep_link")
+            }
+
             trackEvent(event: OneTapTrackingEvents.didDismissDialog(properties))
         }
     }
@@ -480,12 +493,16 @@ extension PXOneTapViewController {
     }
 
     private func handlePayButton() {
+        amountOfButtonPress += 1
+        strategyTracking.getPropertieFlow(flow: "handlePayButton, buttonPressed \(amountOfButtonPress), isPaymenttoggle \(isPaymentToggle)")
         if let selectedCard = getSuspendedCardSliderViewModel(), let selectedApplication = selectedCard.selectedApplication {
             if let tapPayBehaviour = selectedApplication.behaviours?[PXBehaviour.Behaviours.tapPay.rawValue] {
                 handleBehaviour(tapPayBehaviour, isSplit: false)
             }
         } else {
-            confirmPayment()
+            if !(isPaymentToggle.isPayment() ?? false) {
+                confirmPayment()
+            }
         }
     }
 
@@ -524,6 +541,10 @@ extension PXOneTapViewController {
         let splitPayment = viewModel.splitPaymentEnabled
         hideBackButton()
         hideNavBar()
+
+        let resultTracking = strategyTracking.getPropertiesTrackings(versionLib: "", counter: amountOfButtonPress, paymentMethod: viewModel.amountHelper.getPaymentData().paymentMethod, offlinePaymentMethod: nil, businessResult: nil)
+        trackEvent(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Confirm_Payments(resultTracking))
+
         callbackConfirm(viewModel.amountHelper.getPaymentData(), splitPayment)
     }
 

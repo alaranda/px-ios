@@ -8,6 +8,14 @@ final class PXPaymentFlow: NSObject, PXFlow {
     var splitAccountMoney: PXPaymentData?
 
     var pxNavigationHandler: PXNavigationHandler
+    var strategyTracking: StrategyTrackings = ImpletationStrategy()
+    var isPaymentToggle = IsPaymentToggle.noPaying
+
+    let paymentFlow = "PXPaymentFlow+PaymentHandlerProtocol - payment "
+    let businessFlow = "PXPaymentFlow+PaymentHandlerProtocol - handlePayment - business "
+    let basePaymentBusiness = "PXPaymentFlow+PaymentHandlerProtocol - basePayment - business "
+    let basePaymentPayment = "PXPaymentFlow+PaymentHandlerProtocol - basePayment - payment "
+    let handlePayment = "PXPaymentFlow+PaymentHandlerProtocol - handlePayment "
 
     init(paymentPlugin: PXSplitPaymentProcessor?, mercadoPagoServices: MercadoPagoServices, paymentErrorHandler: PXPaymentErrorHandlerProtocol, navigationHandler: PXNavigationHandler, amountHelper: PXAmountHelper, checkoutPreference: PXCheckoutPreference?, ESCBlacklistedStatus: [String]?) {
         model = PXPaymentFlowModel(paymentPlugin: paymentPlugin, mercadoPagoServices: mercadoPagoServices, ESCBlacklistedStatus: ESCBlacklistedStatus)
@@ -24,7 +32,12 @@ final class PXPaymentFlow: NSObject, PXFlow {
         self.splitAccountMoney = splitAccountMoney
 
         let paymentData = amountHelper.getPaymentData()
-        if let discountToken = amountHelper.paymentConfigurationService.getAmountConfigurationForPaymentMethod(paymentOptionID: paymentData.token?.cardId, paymentMethodId: paymentData.paymentMethod?.getId(), paymentTypeId: paymentData.paymentMethod?.paymentTypeId)?.discountToken, amountHelper.splitAccountMoney == nil {
+        if let discountToken = amountHelper.paymentConfigurationService.getAmountConfigurationForPaymentMethod(
+            paymentOptionID: paymentData.paymentOptionId,
+            paymentMethodId: paymentData.paymentMethod?.getId(),
+            paymentTypeId: paymentData.paymentMethod?.paymentTypeId
+        )?.discountToken,
+            amountHelper.splitAccountMoney == nil {
             self.model.amountHelper?.getPaymentData().discount?.id = discountToken.stringValue
             self.model.amountHelper?.getPaymentData().campaign?.id = discountToken
         }
@@ -52,7 +65,9 @@ final class PXPaymentFlow: NSObject, PXFlow {
         DispatchQueue.main.async {
             switch self.model.nextStep() {
             case .createDefaultPayment:
-                self.createPayment(programId: self.validationProgramId)
+                if !(self.isPaymentToggle.isPayment() ?? false) {
+                    self.createPayment(programId: self.validationProgramId)
+                }
             case .createPaymentPlugin:
                 self.createPaymentWithPlugin(plugin: self.model.paymentPlugin, programId: self.validationProgramId)
             case .createPaymentPluginScreen:
@@ -137,6 +152,8 @@ final class PXPaymentFlow: NSObject, PXFlow {
     }
 
     func finishFlow() {
+        strategyTracking.getPropertieFlow(flow: "finishFlow")
+
         if let paymentResult = model.paymentResult {
             self.resultHandler?.finishPaymentFlow(paymentResult: paymentResult, instructionsInfo: model.instructionsInfo, pointsAndDiscounts: model.pointsAndDiscounts)
         } else if let businessResult = model.businessResult {
@@ -172,5 +189,7 @@ private extension PXPaymentFlow {
         var properties: [String: Any] = [:]
         properties["destination"] = notification.rawValue
         MPXTracker.sharedInstance.trackEvent(event: PostPaymentTrackingEvents.willNavigateToPostPayment(properties))
+
+        strategyTracking.getPropertieFlow(flow: "goToPostPayment - destination \(notification.rawValue)")
     }
 }

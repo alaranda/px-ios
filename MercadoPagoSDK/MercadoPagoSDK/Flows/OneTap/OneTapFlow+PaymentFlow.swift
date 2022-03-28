@@ -65,6 +65,17 @@ extension OneTapFlow: PXPaymentResultHandlerProtocol {
     }
 
     func finishPaymentFlow(paymentResult: PaymentResult, instructionsInfo: PXInstruction?, pointsAndDiscounts: PXPointsAndDiscounts?) {
+        if paymentResult.isApproved() {
+            isPaymentToggle.toggle()
+            strategyTrackings.getPropertieFlowSuccess(flow: "Pagamento aprovado payment: \(isPaymentToggle)")
+        }
+        if paymentResult.isRejected() {
+            MPXTracker.sharedInstance.trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Reject)
+        }
+        if paymentResult.isPending() {
+            MPXTracker.sharedInstance.trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Pending)
+        }
+
         model.paymentResult = paymentResult
         model.instructionsInfo = instructionsInfo
         model.pointsAndDiscounts = pointsAndDiscounts
@@ -72,6 +83,16 @@ extension OneTapFlow: PXPaymentResultHandlerProtocol {
     }
 
     func finishPaymentFlow(businessResult: PXBusinessResult, pointsAndDiscounts: PXPointsAndDiscounts?) {
+        if businessResult.isApproved() {
+            isPaymentToggle.toggle()
+            strategyTrackings.getPropertieFlowSuccess(flow: "Pagamento aprovado business: \(isPaymentToggle)")
+        }
+        if businessResult.isError() {
+            MPXTracker.sharedInstance.trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Reject)
+        }
+        if businessResult.isWarning() {
+            MPXTracker.sharedInstance.trackScreen(event: PXPaymentsInfoGeneralEvents.infoGeneral_Follow_Pending)
+        }
         model.businessResult = businessResult
         model.pointsAndDiscounts = pointsAndDiscounts
         finishPaymentFlow(status: businessResult.getBusinessStatus().getDescription())

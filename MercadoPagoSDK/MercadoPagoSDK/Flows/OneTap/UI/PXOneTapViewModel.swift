@@ -219,8 +219,20 @@ extension PXOneTapViewModel {
             } else if selectedApplication.paymentTypeId == PXPaymentTypes.DEBIT_CARD.rawValue {
                 // If it's debit and has split, update split message
                 if let amountToPay = selectedApplication.selectedPayerCost?.totalAmount {
-                    let displayMessage = getSplitMessageForDebit(amountToPay: amountToPay)
-                    let installmentInfoModel = PXOneTapInstallmentInfoViewModel(text: displayMessage, installmentData: installment, selectedPayerCost: selectedPayerCost, shouldShowArrow: selectedApplication.shouldShowArrow, status: selectedApplication.status, benefits: selectedApplication.benefits, shouldShowInstallmentsHeader: shouldShowInstallmentsHeader)
+                    // Hide value if splitEnabled equals null or false
+                    let splitConfiguration = selectedApplication.amountConfiguration?.splitConfiguration
+                    let splitEnabled = splitConfiguration?.splitEnabled ?? false
+                    let amountMessage = getSplitMessageForDebit(amountToPay: amountToPay)
+                    let displayMessage = splitEnabled ? amountMessage : emptyMessage
+                    let installmentInfoModel = PXOneTapInstallmentInfoViewModel(
+                        text: displayMessage,
+                        installmentData: installment,
+                        selectedPayerCost: selectedPayerCost,
+                        shouldShowArrow: selectedApplication.shouldShowArrow,
+                        status: selectedApplication.status,
+                        benefits: selectedApplication.benefits,
+                        shouldShowInstallmentsHeader: shouldShowInstallmentsHeader
+                    )
                     model.append(installmentInfoModel)
                 }
             } else {
@@ -380,7 +392,7 @@ extension PXOneTapViewModel {
         }
 
         if let chargeRuleMessage = getChargeRuleBottomMessage(paymentTypeId), (status?.isUsable() ?? true) {
-            let text = PXText(message: chargeRuleMessage, backgroundColor: nil, textColor: nil, weight: nil)
+            let text = PXText(message: chargeRuleMessage, backgroundColor: nil, textColor: nil, weight: nil, alignment: nil)
             text.defaultTextColor = defaultTextColor
             text.defaultBackgroundColor = defaultBackgroundColor
             return PXCardBottomMessage(text: text, fixed: false)
@@ -395,7 +407,7 @@ extension PXOneTapViewModel {
         }
 
         if reimbursementAppliedInstallments.contains(selectedInstallments), (status?.isUsable() ?? true) {
-            let text = PXText(message: benefits?.reimbursement?.card?.message, backgroundColor: nil, textColor: nil, weight: nil)
+            let text = PXText(message: benefits?.reimbursement?.card?.message, backgroundColor: nil, textColor: nil, weight: nil, alignment: nil)
             text.defaultTextColor = defaultTextColor
             text.defaultBackgroundColor = defaultBackgroundColor
             return PXCardBottomMessage(text: text, fixed: false)

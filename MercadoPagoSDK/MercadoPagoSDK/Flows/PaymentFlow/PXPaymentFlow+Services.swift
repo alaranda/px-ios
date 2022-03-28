@@ -11,6 +11,8 @@ extension PXPaymentFlow {
             PXCheckoutStore.sharedInstance.validationProgramId = programId
         }
 
+        strategyTracking.getPropertieFlow(flow: "createPaymentWithPlugin")
+
         plugin.didReceive?(checkoutStore: PXCheckoutStore.sharedInstance)
 
         plugin.startPayment?(checkoutStore: PXCheckoutStore.sharedInstance, errorHandler: self as PXPaymentProcessorErrorHandler, successWithBasePayment: { [weak self] basePayment in
@@ -19,6 +21,8 @@ extension PXPaymentFlow {
     }
 
     func createPayment(programId: String?) {
+        strategyTracking.getPropertieFlow(flow: "createPayment, isPaymenttoggle \(isPaymentToggle)")
+
         guard model.amountHelper?.getPaymentData() != nil, model.checkoutPreference != nil else {
             showError()
             return
@@ -64,6 +68,8 @@ extension PXPaymentFlow {
     }
 
     func getPointsAndDiscounts() {
+        strategyTracking.getPropertieFlow(flow: "getPointsAndDiscounts")
+
         var paymentIds = [String]()
         var paymentMethodsIds = [String]()
         if let split = splitAccountMoney, let paymentMethod = split.paymentMethod?.id {
